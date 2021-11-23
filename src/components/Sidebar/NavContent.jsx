@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import Social from "./Social";
 import externalUrls from "./externalUrls";
 import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
+import { ReactComponent as AuctionIcon } from "../../assets/icons/auction.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
 import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
 import { ReactComponent as SquidIcon } from "../../assets/icons/squid.svg";
@@ -35,7 +36,7 @@ function NavContent() {
 
   return (
     <Paper className="dapp-sidebar">
-      <Box className="dapp-sidebar-inner" display="flex" justifyContent="space-between" flexDirection="column">
+      <Box className="dapp-sidebar-inner" display="flex" justifyContent="center" flexDirection="column">
         <div className="dapp-menu-top">
           <Box className="branding-header">
             <Link href="https://squid.xyz/" target="_blank">
@@ -81,7 +82,7 @@ function NavContent() {
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
                 <Typography variant="h6">
-                  <FontAwesomeIcon icon={faGavel} style={{ width: "20px" }} />
+                  <SvgIcon color="primary" component={AuctionIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />
                   Auction
                 </Typography>
               </Link>
@@ -138,21 +139,21 @@ function NavContent() {
             </div>
           </div>
         </div>
-        {/*  <Box className="dapp-menu-bottom" display="flex" justifyContent="space-between" flexDirection="column">*/}
-        {/*    <div className="dapp-menu-external-links">*/}
-        {/*      {Object.keys(externalUrls).map((link, i) => {*/}
-        {/*        return (*/}
-        {/*          <Link key={i} href={`${externalUrls[link].url}`} target="_blank">*/}
-        {/*            <Typography variant="h6">{externalUrls[link].icon}</Typography>*/}
-        {/*            <Typography variant="h6">{externalUrls[link].title}</Typography>*/}
-        {/*          </Link>*/}
-        {/*        );*/}
-        {/*      })}*/}
-        {/*    </div>*/}
-        {/*    <div className="dapp-menu-social">*/}
-        {/*      <Social />*/}
-        {/*    </div>*/}
-        {/*  </Box>*/}
+        <Box className="dapp-menu-bottom" display="flex" justifyContent="space-between" flexDirection="column">
+          <div className="dapp-menu-external-links">
+            {Object.keys(externalUrls).map((link, i) => {
+              return (
+                <Link key={i} href={`${externalUrls[link].url}`} target="_blank">
+                  <Typography variant="h6">{externalUrls[link].icon}</Typography>
+                  <Typography variant="h6">{externalUrls[link].title}</Typography>
+                </Link>
+              );
+            })}
+          </div>
+          <div className="dapp-menu-social">
+            <Social />
+          </div>
+        </Box>
       </Box>
     </Paper>
   );

@@ -59,11 +59,9 @@ function ChooseBond() {
     <div id="choose-bond-view">
       <div style={{ width: "100%", maxWidth: 833 }}>
         {!isAccountLoading && !isEmpty(accountBonds) && <ClaimBonds activeBonds={accountBonds} />}
-        <Box className="card-header" style={{ marginBottom: 20 }}>
-          <Typography variant="h5" align="left">
-            Bond
-          </Typography>
-        </Box>
+        <Typography variant="h5" align="left">
+          Bond
+        </Typography>
         <Grid container item xs={12} style={{ margin: "10px 0px 20px" }} className="bond-hero">
           <Grid item xs={6}>
             <Paper className="ohm-card">
