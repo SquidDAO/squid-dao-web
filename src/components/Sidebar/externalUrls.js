@@ -6,24 +6,14 @@ import { SvgIcon } from "@material-ui/core";
 
 const externalUrls = [
   {
-    title: "Forum",
-    url: "https://forum.olympusdao.finance/",
+    title: "Discourse",
+    url: "https://discourse.squid.xyz/",
     icon: <SvgIcon color="primary" component={ForumIcon} style={{ fill: "none" }} />,
   },
   {
-    title: "Governance",
-    url: "https://vote.olympusdao.finance/",
-    icon: <SvgIcon color="primary" component={GovIcon} style={{ fill: "none" }} />,
-  },
-  {
     title: "Docs",
-    url: "https://docs.olympusdao.finance/",
+    url: "https://squid-dao.gitbook.io/squiddao/",
     icon: <SvgIcon color="primary" component={DocsIcon} style={{ fill: "none" }} />,
-  },
-  {
-    title: "Feedback",
-    url: "https://olympusdao.canny.io/",
-    icon: <SvgIcon color="primary" component={FeedbackIcon} style={{ fill: "none" }} />,
   },
 ];
 
