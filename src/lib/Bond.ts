@@ -33,6 +33,7 @@ interface BondOpts {
   bondContractABI: ethers.ContractInterface; // ABI for contract
   networkAddrs: NetworkAddresses; // Mapping of network --> Addresses
   bondToken: string; // Unused, but native token to buy the bond.
+  active: boolean; // active bond or not
 }
 
 // Technically only exporting for the interface
@@ -45,6 +46,7 @@ export abstract class Bond {
   readonly bondContractABI: ethers.ContractInterface; // Bond ABI
   readonly networkAddrs: NetworkAddresses;
   readonly bondToken: string;
+  readonly active: boolean;
 
   // The following two fields will differ on how they are set depending on bond type
   abstract isLP: Boolean;
@@ -62,6 +64,7 @@ export abstract class Bond {
     this.bondContractABI = bondOpts.bondContractABI;
     this.networkAddrs = bondOpts.networkAddrs;
     this.bondToken = bondOpts.bondToken;
+    this.active = bondOpts.active;
   }
 
   getAddressForBond(networkID: NetworkID) {

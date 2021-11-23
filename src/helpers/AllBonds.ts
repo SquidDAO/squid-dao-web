@@ -25,6 +25,7 @@ import { abi as EthBondContract } from "src/abi/bonds/EthContract.json";
 // TODO(zx): Further modularize by splitting up reserveAssets into vendor token definitions
 //   and include that in the definition of a bond
 export const dai = new StableBond({
+  active: false, // unused
   name: "dai",
   displayName: "DAI",
   bondToken: "DAI",
@@ -43,8 +44,9 @@ export const dai = new StableBond({
 });
 
 export const weth = new StableBond({
-  name: "weth",
-  displayName: "WETH",
+  active: false,
+  name: "weth v1",
+  displayName: "WETH v1",
   bondToken: "WETH",
   bondIconSvg: wETHImg,
   bondContractABI: WethBondContract,
@@ -60,7 +62,27 @@ export const weth = new StableBond({
   },
 });
 
+export const wethV2 = new StableBond({
+  active: true,
+  name: "weth v2",
+  displayName: "WETH v2",
+  bondToken: "WETH",
+  bondIconSvg: wETHImg,
+  bondContractABI: WethBondContract,
+  networkAddrs: {
+    [NetworkID.Mainnet]: {
+      bondAddress: "0xd9cf92F1e3758EdE8bb47e37CAc7927dFbd54c12",
+      reserveAddress: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    },
+    [NetworkID.Testnet]: {
+      bondAddress: "0xDea5668E815dAF058e3ecB30F645b04ad26374Cf",
+      reserveAddress: "0xB2180448f8945C8Cc8AE9809E67D6bd27d8B2f2C",
+    },
+  },
+});
+
 export const frax = new StableBond({
+  active: false, // unused
   name: "frax",
   displayName: "FRAX",
   bondToken: "FRAX",
@@ -79,6 +101,7 @@ export const frax = new StableBond({
 });
 
 export const lusd = new StableBond({
+  active: false, // unused
   name: "lusd",
   displayName: "LUSD",
   bondToken: "LUSD",
@@ -97,6 +120,7 @@ export const lusd = new StableBond({
 });
 
 export const eth = new CustomBond({
+  active: false, // unused
   name: "eth",
   displayName: "wETH",
   bondToken: "wETH",
@@ -124,6 +148,7 @@ export const eth = new CustomBond({
 });
 
 export const squid_weth = new LPBond({
+  active: true,
   name: "squid_eth_lp",
   displayName: "SQUID-ETH LP",
   bondToken: "ETH",
@@ -145,6 +170,7 @@ export const squid_weth = new LPBond({
 });
 
 export const ohm_frax = new LPBond({
+  active: false, // unused
   name: "ohm_frax_lp",
   displayName: "OHM-FRAX LP",
   bondToken: "FRAX",
@@ -166,6 +192,7 @@ export const ohm_frax = new LPBond({
 });
 
 export const ohm_lusd = new LPBond({
+  active: false, // unused
   name: "ohm_lusd_lp",
   displayName: "OHM-LUSD LP",
   bondToken: "LUSD",
@@ -192,7 +219,7 @@ export const ohm_lusd = new LPBond({
 // Is it an LP Bond? use `new LPBond`
 // Add new bonds to this array!!
 //export const allBonds = [dai, frax, eth, ohm_dai, ohm_frax, lusd, ohm_lusd];
-export const allBonds = [squid_weth, weth];
+export const allBonds = [squid_weth, weth, wethV2];
 export const allBondsMap = allBonds.reduce((prevVal, bond) => {
   return { ...prevVal, [bond.name]: bond };
 }, {});

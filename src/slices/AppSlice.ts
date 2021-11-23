@@ -51,6 +51,7 @@ export const loadAppDetails = createAsyncThunk(
     if (graphData && graphData.data && graphData.data.protocolMetrics.length > 0) {
       stakingTVL = parseFloat(graphData.data.protocolMetrics[0].totalValueLocked);
     }
+
     // const stakingTVL = parseFloat(graphData.data.protocolMetrics[0].totalValueLocked);
     // NOTE (appleseed): marketPrice from Graph was delayed, so get CoinGecko price
     // const marketPrice = parseFloat(graphData.data.protocolMetrics[0].ohmPrice);

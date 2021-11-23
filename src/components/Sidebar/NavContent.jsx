@@ -59,20 +59,20 @@ function NavContent() {
 
           <div className="dapp-menu-links">
             <div className="dapp-nav" id="navbarNav">
-              {/*<Link*/}
-              {/*  component={NavLink}*/}
-              {/*  id="dash-nav"*/}
-              {/*  to="/dashboard"*/}
-              {/*  isActive={(match, location) => {*/}
-              {/*    return checkPage(match, location, "dashboard");*/}
-              {/*  }}*/}
-              {/*  className={`button-dapp-menu ${isActive ? "active" : ""}`}*/}
-              {/*>*/}
-              {/*  <Typography variant="h6">*/}
-              {/*    <SvgIcon color="primary" component={DashboardIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />*/}
-              {/*    Dashboard*/}
-              {/*  </Typography>*/}
-              {/*</Link>*/}
+              <Link
+                component={NavLink}
+                id="dash-nav"
+                to="/dashboard"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "dashboard");
+                }}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+              >
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={DashboardIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />
+                  Dashboard
+                </Typography>
+              </Link>
 
               <Link
                 component={NavLink}

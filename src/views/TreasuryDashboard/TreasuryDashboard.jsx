@@ -100,7 +100,7 @@ function TreasuryDashboard() {
                 Market Cap
               </Typography>
               <Typography variant="h5">
-                {marketCap && formatCurrency(marketCap, 0)}
+                {marketCap && formatEth(marketCap, 0)}
                 {!marketCap && <Skeleton type="text" />}
               </Typography>
             </Paper>
@@ -122,10 +122,10 @@ function TreasuryDashboard() {
           <Grid item lg={3} md={3} sm={12} xs={12}>
             <Paper className="ohm-card">
               <Typography variant="h6" color="textSecondary">
-                Backing per OHM
+                Backing per SQUID
               </Typography>
               <Typography variant="h5">
-                {backingPerOhm ? formatCurrency(backingPerOhm, 2) : <Skeleton type="text" />}
+                {backingPerOhm ? formatEth(backingPerOhm, 2) : <Skeleton type="text" />}
               </Typography>{" "}
             </Paper>
           </Grid>
@@ -135,7 +135,7 @@ function TreasuryDashboard() {
                 Current Index
                 <InfoTooltip
                   message={
-                    "The current index tracks the amount of sSQUID accumulated since the beginning of staking. Basically, how much sOHM one would have if they staked and held a single OHM from day 1."
+                    "The current index tracks the amount of sSQUID accumulated since the beginning of staking. Basically, how much sSQUID one would have if they staked and held a single SQUID from day 1."
                   }
                 />
               </Typography>
@@ -171,7 +171,7 @@ function TreasuryDashboard() {
                 <Chart
                   type="stack"
                   data={data}
-                  dataKey={["treasuryDaiMarketValue", "treasuryFraxMarketValue"]}
+                  dataKey={["treasuryEthMarketValue"]}
                   stopColor={[
                     ["#7558C6", "rgba(255, 110, 214, 0.2)"],
                     ["#58BFC6", "rgba(110, 151, 255, 0.2)"],
@@ -179,7 +179,7 @@ function TreasuryDashboard() {
                     ["#8BFF4D", "#4C8C2A"],
                   ]}
                   headerText="Market Value of Treasury Assets"
-                  headerSubText={`${data && formatCurrency(data[0].treasuryMarketValue)}`}
+                  headerSubText={`${data && formatEth(data[0].treasuryMarketValue)}`}
                   bulletpointColors={bulletpoints.coin}
                   itemNames={tooltipItems.coin}
                   itemType={itemType.dollar}
@@ -195,7 +195,7 @@ function TreasuryDashboard() {
                   type="stack"
                   data={data}
                   format="currency"
-                  dataKey={["treasuryDaiRiskFreeValue", "treasuryFraxRiskFreeValue"]}
+                  dataKey={["treasuryEthRiskFreeValue"]}
                   stopColor={[
                     ["#7558C6", "rgba(255, 110, 214, 0.2)"],
                     ["#58BFC6", "rgba(110, 151, 255, 0.2)"],
@@ -203,7 +203,7 @@ function TreasuryDashboard() {
                     ["#000", "#fff"],
                   ]}
                   headerText="Risk Free Value of Treasury Assets"
-                  headerSubText={`${data && formatCurrency(data[0].treasuryRiskFreeValue)}`}
+                  headerSubText={`${data && formatEth(data[0].treasuryRiskFreeValue)}`}
                   bulletpointColors={bulletpoints.coin}
                   itemNames={tooltipItems.coin}
                   itemType={itemType.dollar}
@@ -218,10 +218,10 @@ function TreasuryDashboard() {
                 <Chart
                   type="area"
                   data={data}
-                  dataKey={["treasuryOhmDaiPOL"]}
+                  dataKey={["treasurySquidEthPOL"]}
                   stopColor={[["#7558C6", "rgba(255, 110, 214, 0.2)"]]}
                   headerText="Protocol Owned Liquidity SQUID-WETH"
-                  headerSubText={`${data && trim(data[0].treasuryOhmDaiPOL, 2)}% `}
+                  headerSubText={`${data && trim(data[0].treasurySquidEthPOL, 2)}% `}
                   dataFormat="percent"
                   bulletpointColors={bulletpoints.pol}
                   itemNames={tooltipItems.pol}

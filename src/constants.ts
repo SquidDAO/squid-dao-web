@@ -12,7 +12,6 @@ export const POOL_GRAPH_URLS = {
 };
 
 export const SQUID_NFT_GRAPH_URLS: { [key: string]: string } = {
-  // TODO: change to real subgraph URL
   4: "https://api.thegraph.com/subgraphs/name/squiddaodev/squid-dao-nft-rinkeby",
   1: "https://api.thegraph.com/subgraphs/name/squiddaodev/squid-dao-nft",
 };

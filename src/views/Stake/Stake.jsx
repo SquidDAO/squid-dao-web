@@ -136,7 +136,7 @@ function Stake() {
       .filter(Boolean)
       .map(balance => Number(balance))
       .reduce((a, b) => a + b, 0)
-      .toFixed(4),
+      .toFixed(6),
   );
   // TODO: This could be a bug if the number is very large.
   const trimmedStakingAPY = trim(stakingAPY * 100, 1);
@@ -321,7 +321,7 @@ function Stake() {
                     Your Balance
                   </Typography>
                   <Typography variant="body1">
-                    {isAppLoading ? <Skeleton width="80px" /> : <>{trim(ohmBalance, 4)} SQUID</>}
+                    {isAppLoading ? <Skeleton width="80px" /> : <>{trim(ohmBalance, 6)} SQUID</>}
                   </Typography>
                 </div>
 

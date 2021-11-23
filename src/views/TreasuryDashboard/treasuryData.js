@@ -16,27 +16,22 @@ query {
     treasuryMarketValue
     nextEpochRebase
     nextDistributedOhm
-    treasuryDaiRiskFreeValue
-    treasuryFraxMarketValue
-    treasuryDaiMarketValue
-    treasuryFraxRiskFreeValue
-    treasuryXsushiMarketValue
-    treasuryWETHMarketValue
+    treasuryEthRiskFreeValue
+    treasuryEthMarketValue
     currentAPY
     runway10k
     runway20k
     runway50k
     runwayCurrent
     holders
-    treasuryOhmDaiPOL
-    treasuryOhmFraxPOL
+    treasurySquidEthPOL
   }
 }
 `;
 
 export const rebasesDataQuery = `
 query {
-  rebases(where: {contract: "0xfd31c7d00ca47653c6ce64af53c1571f9c36566a"}, orderBy: timestamp, first: 1000, orderDirection: desc) {
+  rebases(where: {contract: "0x5895B13Da9BEB11e36136817cdcf3c4fcb16aaeA"}, orderBy: timestamp, first: 1000, orderDirection: desc) {
     percentage
     timestamp
   }
@@ -137,25 +132,25 @@ export const bulletpoints = {
 
 export const tooltipItems = {
   tvl: ["Total Value Deposited"],
-  coin: ["DAI", "FRAX", "ETH", "SUSHI"],
-  holder: ["OHMies"],
+  coin: ["WETH"],
+  holder: ["sSQUID holders"],
   apy: ["APY"],
   runway: ["Days"],
   pol: ["SLP Treasury", "Market SLP"],
 };
 
 export const tooltipInfoMessages = {
-  tvl: "Total Value Deposited, is the dollar amount of all OHM staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
-  mvt: "Market Value of Treasury Assets, is the sum of the value (in dollars) of all assets held by the treasury.",
-  rfv: "Risk Free Value, is the amount of funds the treasury guarantees to use for backing OHM.",
+  tvl: "Total Value Deposited, is the amount of all SQUID staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
+  mvt: "Market Value of Treasury Assets, is the sum of the value (in ETH) of all assets held by the treasury.",
+  rfv: "Risk Free Value, is the amount of funds the treasury guarantees to use for backing SQUID.",
   pol: "Protocol Owned Liquidity, is the amount of LP the treasury owns and controls. The more POL the better for the protocol and its users.",
-  holder: "Holders, represents the total number of Ohmies (sOHM holders)",
-  staked: "OHM Staked, is the ratio of sOHM to OHM (staked vs unstaked)",
+  holder: "Holders, represents the total number of sSQUID holders",
+  staked: "SQUID Staked, is the ratio of sSQUID to SQUID (staked vs unstaked)",
   apy: "Annual Percentage Yield, is the normalized representation of an interest rate, based on a compounding period over one year. Note that APYs provided are rather ballpark level indicators and not so much precise future results.",
-  runway: "Runway, is the number of days sOHM emissions can be sustained at a given rate. Lower APY = longer runway",
+  runway: "Runway, is the number of days sSQUID emissions can be sustained at a given rate. Lower APY = longer runway",
 };
 
 export const itemType = {
-  dollar: "$",
+  dollar: "Ξ",
   percentage: "%",
 };

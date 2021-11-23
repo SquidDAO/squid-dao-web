@@ -41,11 +41,13 @@ export function ClaimBondTableData({ userBond }) {
   return (
     <TableRow id={`${bondName}--claim`}>
       <TableCell align="left" className="bond-name-cell">
-        <BondLogo bond={bond} />
-        <div className="bond-name">
-          <Typography variant="body1">
-            {bond.displayName ? trim(bond.displayName, 4) : <Skeleton width={100} />}
-          </Typography>
+        <div className="d-flex">
+          <BondLogo bond={bond} />
+          <div className="bond-name">
+            <Typography variant="body1">
+              {bond.displayName ? trim(bond.displayName, 4) : <Skeleton width={100} />}
+            </Typography>
+          </div>
         </div>
       </TableCell>
       <TableCell align="center">
@@ -56,16 +58,28 @@ export function ClaimBondTableData({ userBond }) {
         {isAppLoading ? <Skeleton /> : vestingPeriod()}
       </TableCell>
       <TableCell align="right">
-        <Button
-          variant="outlined"
-          color="primary"
-          disabled={isPendingTxn(pendingTransactions, "redeem_bond_" + bondName)}
-          onClick={() => onRedeem({ autostake: false })}
-        >
-          <Typography variant="h6">
-            {txnButtonTextGeneralPending(pendingTransactions, "redeem_bond_" + bondName, "Claim")}
-          </Typography>
-        </Button>
+        <div className="d-flex flex-column">
+          <Button
+            variant="outlined"
+            color="primary"
+            className="mb-2"
+            disabled={isPendingTxn(pendingTransactions, "redeem_bond_" + bondName)}
+            onClick={() => onRedeem({ autostake: false })}
+          >
+            <Typography variant="h6">
+              {txnButtonTextGeneralPending(pendingTransactions, "redeem_bond_" + bondName, "Claim")}
+            </Typography>
+          </Button>
+          <Button variant="outlined" color="primary" onClick={() => onRedeem({ autostake: true })}>
+            <Typography variant="h6">
+              {txnButtonTextGeneralPending(
+                pendingTransactions,
+                "redeem_bond_" + bondName + "_autostake",
+                "Claim & Stake",
+              )}
+            </Typography>
+          </Button>
+        </div>
       </TableCell>
     </TableRow>
   );
