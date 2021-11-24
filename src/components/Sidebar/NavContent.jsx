@@ -25,6 +25,9 @@ function NavContent() {
     if (currentPath.indexOf("dashboard") >= 0 && page === "dashboard") {
       return true;
     }
+    if (currentPath.indexOf("auction") >= 0 && page === "auction") {
+      return true;
+    }
     if (currentPath.indexOf("stake") >= 0 && page === "stake") {
       return true;
     }
@@ -78,7 +81,9 @@ function NavContent() {
                 component={NavLink}
                 id="auction-nav"
                 to="/auction"
-                isActive={() => false}
+                isActive={(match, location) => {
+                  return checkPage(match, location, "auction");
+                }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
                 <Typography variant="h6">

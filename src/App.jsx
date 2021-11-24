@@ -30,6 +30,7 @@ import { girth as gTheme } from "./themes/girth.js";
 
 import "./style.scss";
 import Landing from "./views/Landing/Landing";
+import Auction from "./views/Auction/Auction";
 
 // 😬 Sorry for all the console logging
 const DEBUG = false;
@@ -215,6 +216,14 @@ function App() {
 
             <Route path="/stake">
               <Stake />
+            </Route>
+
+            <Route path="/auction">
+              <Auction />
+            </Route>
+
+            <Route path="/auction/:id" exact>
+              <Auction />
             </Route>
 
             <Route path="/bonds">

@@ -21,12 +21,12 @@ export default class Root extends Component {
           <BrowserRouter basename={"/#"}>
             <AuctionContextProvider>
               <Switch>
-                <Route path="/auction" exact>
+                <Route path="/landing" exact>
                   <Landing />
                 </Route>
-                <Route path="/squid/:id" exact>
-                  <Landing />
-                </Route>
+                {/*<Route path="/squid/:id" exact>*/}
+                {/*  <Landing />*/}
+                {/*</Route>*/}
                 <Route>
                   <App />
                 </Route>
