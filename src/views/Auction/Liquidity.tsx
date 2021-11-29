@@ -1,16 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import { formatEth, trim } from "../../helpers";
 
-const Liquidity: React.FC = () => {
+const Liquidity: React.FC<{ treasuryLPBalance: number; ratio: number }> = ({ treasuryLPBalance, ratio }) => {
   return (
     <Wrapper>
       <Title>Liquidity Accumulation</Title>
-      <div className="d-flex justify-content-between" style={{ margin: "0 -1rem 2rem -1rem" }}>
-        <div className="flex-grow-1" style={{ padding: "0 1rem" }}>
-          <Stats title="Protocol Owned Liquidity Value" value="4444444 ETH" />
+      <div className="row g-4 d-flex flex-wrap justify-content-between" style={{ margin: "0 -1rem 2rem -1rem" }}>
+        <div className="col flex-grow-1" style={{ padding: "0 1rem" }}>
+          <Stats title="Protocol Owned Liquidity Value" value={formatEth(treasuryLPBalance)} />
         </div>
-        <div className="flex-grow-1" style={{ padding: "0 1rem" }}>
-          <Stats title="Protocol Owned Liquidity Value" value="99%" />
+        <div className="col flex-grow-1" style={{ padding: "0 1rem" }}>
+          <Stats title="Protocol Owned Liquidity Percentage" value={trim(ratio, 2) + "%"} />
         </div>
       </div>
       <P>
@@ -47,7 +48,7 @@ const P = styled.p`
 
 const Stats: React.FC<{ title: string; value: string }> = ({ title, value }) => {
   return (
-    <StatsWrapper className="d-flex flex-column align-items-center">
+    <StatsWrapper className="d-flex flex-column align-items-center h-100">
       <StatsTitle>{title}</StatsTitle>
       <StatsValue>{value}</StatsValue>
     </StatsWrapper>
@@ -63,6 +64,7 @@ const StatsWrapper = styled.div`
 const StatsTitle = styled.div`
   font-size: 1rem;
   margin-bottom: 0.5rem;
+  flex-grow: 1;
 `;
 
 const StatsValue = styled.div`
@@ -70,6 +72,7 @@ const StatsValue = styled.div`
   font-size: 2rem;
   color: #7f7fd5;
   font-weight: 600;
+  white-space: nowrap;
 `;
 
 export default Liquidity;

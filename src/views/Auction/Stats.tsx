@@ -1,12 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import { formatEth, trim } from "../../helpers";
 
-const Stats: React.FC = () => {
+const Stats: React.FC<{ treasuryBalance: number; stakingAPY: number; tvl: number }> = ({
+  treasuryBalance,
+  stakingAPY,
+  tvl,
+}) => {
   return (
-    <div className="d-flex justify-content-around">
-      <Stat title="Treasury Balance" value="$838,392,324" />
-      <Stat title="Current APY" value="43.50%" />
-      <Stat title="Total Value Locked" value="$99,212" />
+    <div className="row g-4 d-flex justify-content-around">
+      <Stat title="Treasury Balance" value={formatEth(treasuryBalance)} />
+      <Stat title="Current APY" value={trim(stakingAPY * 100, 1) + "%"} />
+      <Stat title="Total Value Deposited" value={formatEth(tvl)} />
     </div>
   );
 };
@@ -18,7 +23,7 @@ interface StatProps {
 
 const Stat: React.FC<StatProps> = ({ title, value }) => {
   return (
-    <div className="text-center" style={{ fontWeight: 600 }}>
+    <div className="col text-center" style={{ fontWeight: 600, minWidth: "16rem" }}>
       <Value>{value}</Value>
       <Title>{title}</Title>
     </div>
@@ -30,6 +35,7 @@ const Value = styled.div`
   line-height: 3rem;
   color: #7f7fd5;
   margin-bottom: 0.5rem;
+  white-space: nowrap;
 `;
 
 const Title = styled.div`

@@ -20,7 +20,6 @@ import { Stake, ChooseBond, Bond, Dashboard, TreasuryDashboard, PoolTogether } f
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NavDrawer from "./components/Sidebar/NavDrawer.jsx";
-import LoadingSplash from "./components/Loading/LoadingSplash";
 import Messages from "./components/Messages/Messages";
 import NotFound from "./views/404/NotFound";
 
@@ -29,7 +28,7 @@ import { light as lightTheme } from "./themes/light.js";
 import { girth as gTheme } from "./themes/girth.js";
 
 import "./style.scss";
-import Landing from "./views/Landing/Landing";
+import "bootstrap/dist/css/bootstrap.min.css";
 import Auction from "./views/Auction/Auction";
 
 // 😬 Sorry for all the console logging
@@ -218,7 +217,7 @@ function App() {
               <Stake />
             </Route>
 
-            <Route path="/auction">
+            <Route path="/auction" exact>
               <Auction />
             </Route>
 

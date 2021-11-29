@@ -7,7 +7,6 @@ import { Web3ContextProvider } from "./hooks/web3Context";
 import App from "./App";
 import store from "./store";
 import { AuctionContextProvider } from "./hooks/auctionContext";
-import Landing from "./views/Landing/Landing";
 
 export default class Root extends Component {
   constructor(props) {
@@ -21,9 +20,6 @@ export default class Root extends Component {
           <BrowserRouter basename={"/#"}>
             <AuctionContextProvider>
               <Switch>
-                <Route path="/landing" exact>
-                  <Landing />
-                </Route>
                 {/*<Route path="/squid/:id" exact>*/}
                 {/*  <Landing />*/}
                 {/*</Route>*/}

@@ -1,7 +1,7 @@
 import BN from "bignumber.js";
 import { BigNumber, Contract, ethers, utils } from "ethers";
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { Button, FormControl, InputGroup, Spinner } from "react-bootstrap";
+import { Button as MuiButton, FormControl, InputGroup, Spinner } from "react-bootstrap";
 import styled from "styled-components";
 import { abi as auctionAbi } from "../../abi/SquidAuction.json";
 import { addresses } from "../../constants";
@@ -138,23 +138,23 @@ const BidInput: React.FC<BidProps> = ({ auction }) => {
 
   return (
     <>
-      <InputGroup>
-        {!isAuctionEnd && (
-          <>
-            <Input type="number" min="0" onChange={bidAmountHandler} value={bidAmount} />
-            <Placeholder>ETH</Placeholder>
-          </>
-        )}
+      <div className="d-flex">
         {isAuctionEnd ? (
           <AuctionEndedButton onClick={settleAuctionHandler} disabled={!buttonReady}>
             {buttonState.loading ? <Spinner animation="border" /> : buttonState.content}
           </AuctionEndedButton>
         ) : (
-          <BidButton onClick={placeBidHandler} disabled={!buttonReady}>
-            {buttonState.loading ? <Spinner animation="border" /> : buttonState.content}
-          </BidButton>
+          <>
+            <div className="position-relative flex-grow-1 d-flex align-items-center">
+              <Input type="number" min="0" onChange={bidAmountHandler} value={bidAmount} />
+              <Placeholder>ETH</Placeholder>
+            </div>
+            <BidButton onClick={placeBidHandler} disabled={!buttonReady}>
+              {buttonState.loading ? <Spinner animation="border" /> : buttonState.content}
+            </BidButton>
+          </>
         )}
-      </InputGroup>
+      </div>
       {!isAuctionEnd && (
         <Note>
           Minimum bid: {minBid} ETH
@@ -167,15 +167,15 @@ const BidInput: React.FC<BidProps> = ({ auction }) => {
 };
 
 const Input = styled(FormControl)`
-  width: 60%;
   height: 3rem;
   color: black;
   border: 1px solid #aaa !important;
-  border-radius: 0.25rem !important;
+  border-radius: 40px !important;
   background-color: white;
   font-weight: bold;
   outline: none !important;
   box-shadow: none !important;
+  padding-left: 20px;
 
   &:hover,
   &:focus,
@@ -193,50 +193,42 @@ const Input = styled(FormControl)`
 
 const Placeholder = styled.span`
   position: absolute;
-  top: 30%;
-  left: 50%;
+  right: 1.5rem;
   font-weight: bold;
   color: #aaa;
   z-index: 3;
   font-size: 1rem;
 `;
 
-const AuctionEndedButton = styled(Button)`
-  width: 100%;
+const Button = styled(MuiButton)`
   height: 3rem;
   color: white;
   border: transparent;
-  background-color: black;
+  background-color: #7f7fd5;
+  padding: 0.625rem 1.25rem;
+  border-radius: 40px;
   font-weight: bold;
 
   &:hover,
   &:active,
-  &:focus,
-  &:disabled {
-    background-color: #2d2d2d !important;
-    color: rgb(209, 207, 207);
-    outline: none !important;
-    box-shadow: none;
+  &:focus {
+    background-color: #4b4bb5 !important;
   }
+
+  &:disabled {
+    background-color: #c1c3cb !important;
+    color: #8f8f8f;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+`;
+
+const AuctionEndedButton = styled(Button)`
+  width: 100%;
 `;
 
 const BidButton = styled(Button)`
   margin-left: 1rem;
-  width: 40%;
-  height: 3rem;
-  color: white;
-  border: transparent;
-  background-color: black;
-  font-weight: bold;
-
-  &:hover,
-  &:active,
-  &:focus,
-  &:disabled {
-    background-color: #2d2d2d !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
 `;
 
 const Note = styled.div`

@@ -49,7 +49,7 @@ const Bid: React.FC<AuctionProps> = ({ auctionId }) => {
   );
 
   return (
-    <div className="row gy-4">
+    <div className="row gy-4" style={{ flexWrap: "wrap", justifyContent: "center" }}>
       <div className="col col-auto d-flex flex-column align-items-center">
         <Art src={useAuctionImage(auctionId)} />
         <ArtNav
@@ -59,7 +59,7 @@ const Bid: React.FC<AuctionProps> = ({ auctionId }) => {
           onNextAuctionClick={onNextAuction}
         />
       </div>
-      <div className="col d-flex flex-column">
+      <div className="col d-flex flex-column" style={{ minWidth: "22.5rem", maxWidth: "32rem" }}>
         <div className="row mb-3">
           <div className="col">
             <Typography variant="h2" component="div">
@@ -153,12 +153,10 @@ const Winner: React.FC<{ address: string }> = ({ address }) => {
   const ens = useReverseENSLookUp(address);
   return (
     <div>
-      <Typography variant="h6" component="div">
-        Winner
-      </Typography>
-      <Typography variant="h2" component="div">
+      <div style={{ fontSize: "0.75rem", lineHeight: "1.125rem" }}>Winner</div>
+      <div style={{ fontSize: "2rem", lineHeight: "3rem", fontWeight: 700 }}>
         {address ? (ens ? ens : shorten(address)) : "No Winner"}
-      </Typography>
+      </div>
     </div>
   );
 };

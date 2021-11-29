@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import { useAuctionContext } from "../../hooks/auctionContext";
 import Bid from "./Bid";
 import BuySquid from "./BuySquid";
 import Liquidity from "./Liquidity";
 import Splash from "./Splash";
 import Stats from "./Stats";
+import { allBondsMap, squid_weth } from "../../helpers/AllBonds";
+import apollo from "../../lib/apolloClient";
+import { treasuryDataQuery } from "../TreasuryDashboard/treasuryData.js";
+import { Modal, ModalProvider } from "./Modal";
 
 import nft01 from "../../assets/images/nft_01.png";
 import nft02 from "../../assets/images/nft_02.png";
@@ -16,12 +21,53 @@ import ethereumIcon from "../../assets/icons/ethereum.svg";
 import squidIcon from "../../assets/icons/logo.svg";
 import coinIcon from "../../assets/icons/coin.svg";
 
+interface IStateView {
+  app: {
+    stakingAPY: number;
+    [key: string]: any;
+  };
+  bonding: {
+    loading: Boolean;
+    [key: string]: any;
+  };
+}
+
+interface IData {
+  totalValueLocked: number;
+  treasurySquidEthPOL: number;
+}
+
 const Auction: React.FC = () => {
   const { id } = useParams() as { id: string | undefined };
   const initialAuctionId = !isNaN(Number(id)) ? Number(id) : undefined;
 
   const { lastAuctionId, paused } = useAuctionContext();
   const [auctionId, setAuctionId] = useState<number | undefined>(undefined);
+  const [data, setData] = useState<IData[] | undefined>(undefined);
+
+  const treasuryBalance = useSelector((state: IStateView) => {
+    if (state.bonding.loading === false) {
+      let tokenBalances = 0;
+      for (const bond in allBondsMap) {
+        if (allBondsMap[bond].active && state.bonding[bond]) {
+          tokenBalances += state.bonding[bond].purchased;
+        }
+      }
+      return tokenBalances;
+    }
+    return 0;
+  });
+
+  const treasuryLPBalance = useSelector((state: IStateView) => {
+    if (state.bonding.loading === false && state.bonding[squid_weth.name]) {
+      return state.bonding[squid_weth.name].purchased;
+    }
+    return 0;
+  });
+
+  const stakingAPY = useSelector((state: IStateView) => {
+    return state.app.stakingAPY;
+  });
 
   useEffect(() => {
     if (lastAuctionId === undefined) return;
@@ -37,55 +83,80 @@ const Auction: React.FC = () => {
     }
   }, [initialAuctionId, lastAuctionId]);
 
+  useEffect(() => {
+    apollo(treasuryDataQuery).then((r: any) => {
+      let metrics = r.data.protocolMetrics.map((entry: any) =>
+        Object.entries(entry).reduce((obj: any, [key, value]: [any, any]) => ((obj[key] = parseFloat(value)), obj), {}),
+      );
+      metrics = metrics.filter((pm: any) => pm.treasuryMarketValue > 0);
+      setData(metrics);
+    });
+  }, []);
+
+  let tvl: number = 0;
+  let ratio: number = 0;
+  if (data) {
+    tvl = data[0].totalValueLocked;
+    ratio = data[0].treasurySquidEthPOL;
+  }
+
   return (
-    <Wrapper className="d-flex flex-column m-auto">
-      <Splash />
-      {auctionId !== undefined && !paused && <Bid auctionId={auctionId} />}
-      <Section>
-        <SectionTitle>What is the SQUID DAO?</SectionTitle>
-        <Text1 className="text-center">
-          On October 20, 2021, an anonymous group of DeFi veterans came together to launch Squid DAO. These anons
-          believed they could leverage the economic successes popularized by the Olympus and the fundraising mechanisms
-          introduced by Nouns DAOs to create an economic flywheel backed by ETH.
-          <br />
-          Thus, the SQUID was born.
-        </Text1>
-        <BuySquid />
-        <Stats />
-      </Section>
-      <Section>
-        <SectionTitle>How does it work?</SectionTitle>
-        <Text2 className="text-center">
-          The SQUID DAO takes ETH into its treasury via two main mechanisms:
-          <br />
-          the NFT Auctions and Spawning
-        </Text2>
-        <div className="d-flex justify-content-center align-items-center" style={{ marginBottom: "1.5rem" }}>
-          <NFT src={nft02} style={{ width: "220px", height: "220px" }} />
-          <NFT src={nft03} style={{ width: "260px" }} />
-          <NFT src={nft04} style={{ width: "220px", height: "220px" }} />
-        </div>
-        <Text2 className="text-center">
-          Excess ETH, beyond the 1-1 backing,
-          <br />
-          is used to mint additional SQUID which is given to the hibernators.
-        </Text2>
-        <InfoGroup />
-      </Section>
-      <Section>
-        <SectionTitle>What does the NFT do?</SectionTitle>
-        <div className="d-flex" style={{ margin: "0 2.5rem 4rem 2.5rem" }}>
-          <NftBottom src={nft01} />
-          <div className="d-flex flex-column justify-content-between" style={{ padding: "0.5rem 0" }}>
-            <List index={0}>One use of the NFT is to act as a profile picture on social media</List>
-            <List index={1}>Holders of NFT have exclusive entry into hidden chat rooms in the squid dao ecosystem</List>
-            <List index={2}>Holders of the NFT are granted voting power of the direction of the dao</List>
-            <List index={3}>NFT holders have a claim on the fees generated by the protocol</List>
+    <ModalProvider>
+      <Modal />
+      <Wrapper className="d-flex flex-column m-auto">
+        <Splash />
+        {auctionId !== undefined && !paused && <Bid auctionId={auctionId} />}
+        <Section>
+          <SectionTitle>What is the SQUID DAO?</SectionTitle>
+          <Text1 className="text-center">
+            On October 20, 2021, an anonymous group of DeFi veterans came together to launch Squid DAO. These anons
+            believed they could leverage the economic successes popularized by the Olympus and the fundraising
+            mechanisms introduced by Nouns DAOs to create an economic flywheel backed by ETH.
+            <br />
+            Thus, the SQUID was born.
+          </Text1>
+          {/*<BuySquid />*/}
+          <Stats treasuryBalance={treasuryBalance} stakingAPY={stakingAPY} tvl={tvl} />
+        </Section>
+        <Section>
+          <SectionTitle>How does it work?</SectionTitle>
+          <Text2 className="text-center">
+            The SQUID DAO takes ETH into its treasury via two main mechanisms:
+            <br />
+            the NFT Auctions and Spawning
+          </Text2>
+          <div className="d-flex justify-content-center align-items-center" style={{ marginBottom: "1.5rem" }}>
+            <NFT1 src={nft02} />
+            <NFT2 src={nft03} />
+            <NFT3 src={nft04} />
           </div>
-        </div>
-        <Liquidity />
-      </Section>
-    </Wrapper>
+          <Text2 className="text-center">
+            Excess ETH, beyond the 1-1 backing,
+            <br />
+            is used to mint additional SQUID which is given to the hibernators.
+          </Text2>
+          <InfoGroup />
+        </Section>
+        <Section>
+          <SectionTitle>What does the NFT do?</SectionTitle>
+          <div className="d-flex justify-content-center" style={{ margin: "0 2.5rem 4rem 2.5rem", flexWrap: "wrap" }}>
+            <NftBottom src={nft01} />
+            <div
+              className="d-flex flex-column justify-content-between"
+              style={{ padding: "0.5rem 1rem", minWidth: "22.5rem", maxWidth: "32rem", flex: "1 0" }}
+            >
+              <List index={0}>One use of the NFT is to act as a profile picture on social media</List>
+              <List index={1}>
+                Holders of NFT have exclusive entry into hidden chat rooms in the squid dao ecosystem
+              </List>
+              <List index={2}>Holders of the NFT are granted voting power of the direction of the dao</List>
+              <List index={3}>NFT holders have a claim on the fees generated by the protocol</List>
+            </div>
+          </div>
+          <Liquidity treasuryLPBalance={treasuryLPBalance} ratio={ratio} />
+        </Section>
+      </Wrapper>
+    </ModalProvider>
   );
 };
 
@@ -126,17 +197,34 @@ const NFT = styled.img`
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 `;
 
+const NFT1 = styled(NFT)`
+  max-width: 220px;
+  width: 30%;
+  margin-right: -1.5%;
+`;
+
+const NFT2 = styled(NFT)`
+  max-width: 260px;
+  width: 35%;
+  z-index: 1;
+`;
+
+const NFT3 = styled(NFT)`
+  max-width: 220px;
+  width: 30%;
+  margin-left: -1.5%;
+`;
+
 const NftBottom = styled(NFT)`
   width: 400px;
   max-width: 400px;
   height: 400px;
   max-height: 400px;
-  margin-right: 3rem;
 `;
 
 const List: React.FC<{ index: number }> = ({ index, children }) => {
   return (
-    <div className="d-flex align-items-center">
+    <div className="d-flex align-items-center" style={{ padding: "0.5rem 0" }}>
       <ListNumber className="d-flex justify-content-center align-items-center flex-shrink-0">{index}</ListNumber>
       <ListText>{children}</ListText>
     </div>
@@ -164,7 +252,7 @@ const ListText = styled.div`
 const InfoGroup: React.FC = () => {
   return (
     <div className="container mt-5">
-      <div className="row gx-4">
+      <div className="row g-4">
         <div className="col">
           <Info img={ethereumIcon}>ETH in the treasury is Deployed to defi to generate yield</Info>
         </div>

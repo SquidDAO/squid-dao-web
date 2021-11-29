@@ -47,7 +47,7 @@ function ChooseBond() {
     if (state.bonding.loading == false) {
       let tokenBalances = 0;
       for (const bond in allBondsMap) {
-        if (state.bonding[bond]) {
+        if (allBondsMap[bond].active && state.bonding[bond]) {
           tokenBalances += state.bonding[bond].purchased;
         }
       }
@@ -118,11 +118,13 @@ function ChooseBond() {
           {isSmallScreen && (
             <Box className="ohm-card-container">
               <Grid container item spacing={2}>
-                {bonds.map(bond => (
-                  <Grid item xs={12} key={bond.name}>
-                    <BondDataCard key={bond.name} bond={bond} />
-                  </Grid>
-                ))}
+                {bonds
+                  .filter(bond => bond.active)
+                  .map(bond => (
+                    <Grid item xs={12} key={bond.name}>
+                      <BondDataCard key={bond.name} bond={bond} />
+                    </Grid>
+                  ))}
               </Grid>
             </Box>
           )}

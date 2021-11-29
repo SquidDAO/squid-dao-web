@@ -220,7 +220,7 @@ export const ohm_lusd = new LPBond({
 // Add new bonds to this array!!
 //export const allBonds = [dai, frax, eth, ohm_dai, ohm_frax, lusd, ohm_lusd];
 export const allBonds = [squid_weth, weth, wethV2];
-export const allBondsMap = allBonds.reduce((prevVal, bond) => {
+export const allBondsMap: { [name: string]: LPBond | StableBond } = allBonds.reduce((prevVal, bond) => {
   return { ...prevVal, [bond.name]: bond };
 }, {});
 
