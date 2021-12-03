@@ -210,7 +210,7 @@ function App() {
             </Route>
 
             <Route exact path="/">
-              <Redirect to="/stake" />
+              <Redirect to="/auction" />
             </Route>
 
             <Route path="/stake">

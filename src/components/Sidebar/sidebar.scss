@@ -70,12 +70,10 @@
   border-bottom: 1px solid #e0e4ea;
 }
 .dapp-nav a {
+  margin-top: 0.7rem;
   margin-left: 33px;
   align-items: center;
   margin-bottom: 0.5rem;
-  & + a {
-    margin-top: 32px;
-  }
   svg {
     width: 20px;
     height: 20px;
@@ -113,10 +111,10 @@
 .bond-discounts {
   text-align: left;
   color: #999999;
-  padding-left: 33px;
+  padding-left: 23px;
   margin-top: 8px;
   > p {
-    margin-left: 33px;
+    margin-left: 23px;
   }
   .bond {
     display: block;
@@ -125,7 +123,7 @@
     text-decoration: none !important;
     .bond-pair-roi {
       float: right;
-      margin-left: 33px;
+      margin-left: 23px;
     }
   }
 }

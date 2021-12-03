@@ -94,13 +94,13 @@ function OhmMenu() {
               <Paper className="ohm-menu" elevation={1}>
                 <Box component="div" className="buy-tokens">
                   <Link
-                    href={`https://app.sushi.com/swap?inputCurrency=${wethAddress}&outputCurrency=${OHM_ADDRESS}`}
+                    href={`https://cowswap.exchange/#/swap?referral=0x42e61987a5cba002880b3cc5c800952a5804a1c5&inputCurrency=${wethAddress}&outputCurrency=${OHM_ADDRESS}`}
                     target="_blank"
                     rel="noreferrer"
                   >
                     <Button size="large" variant="contained" color="secondary" fullWidth>
                       <Typography align="left">
-                        Buy on Sushiswap <SvgIcon component={ArrowUpIcon} htmlColor="#A3A3A3" />
+                        Buy on Cowswap <SvgIcon component={ArrowUpIcon} htmlColor="#A3A3A3" />
                       </Typography>
                     </Button>
                   </Link>

@@ -73,6 +73,23 @@ import auction71 from "../assets/images/auctions/71.png";
 import auction72 from "../assets/images/auctions/72.png";
 import auction73 from "../assets/images/auctions/73.png";
 import auction74 from "../assets/images/auctions/74.png";
+import auction75 from "../assets/images/auctions/75.png";
+import auction76 from "../assets/images/auctions/76.png";
+import auction77 from "../assets/images/auctions/77.png";
+import auction78 from "../assets/images/auctions/78.png";
+import auction79 from "../assets/images/auctions/79.png";
+import auction80 from "../assets/images/auctions/80.png";
+import auction81 from "../assets/images/auctions/81.png";
+import auction82 from "../assets/images/auctions/82.png";
+import auction83 from "../assets/images/auctions/83.png";
+import auction84 from "../assets/images/auctions/84.png";
+import auction85 from "../assets/images/auctions/85.png";
+import auction86 from "../assets/images/auctions/86.png";
+import auction87 from "../assets/images/auctions/87.png";
+import auction88 from "../assets/images/auctions/88.png";
+import auction89 from "../assets/images/auctions/89.png";
+import auction90 from "../assets/images/auctions/90.png";
+import auction91 from "../assets/images/auctions/91.png";
 
 const auctionImages: { [symbol: string]: any } = {
   0: auction0,
@@ -150,6 +167,23 @@ const auctionImages: { [symbol: string]: any } = {
   72: auction72,
   73: auction73,
   74: auction74,
+  75: auction75,
+  76: auction76,
+  77: auction77,
+  78: auction78,
+  79: auction79,
+  80: auction80,
+  81: auction81,
+  82: auction82,
+  83: auction83,
+  84: auction84,
+  85: auction85,
+  86: auction86,
+  87: auction87,
+  88: auction88,
+  89: auction89,
+  90: auction90,
+  91: auction91,
 };
 
 const useAuctionImage = (auctionId: number) => {

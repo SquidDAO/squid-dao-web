@@ -122,25 +122,27 @@ function NavContent() {
                 </Typography>
               </Link>
 
-              {/*<div className="dapp-menu-data discounts">*/}
-              {/*  <div className="bond-discounts">*/}
-              {/*    <Typography variant="body2">Bond discounts</Typography>*/}
-              {/*    {bonds.map((bond, i) => (*/}
-              {/*      <Link component={NavLink} to={`/bonds/${bond.name}`} key={i} className={"bond"}>*/}
-              {/*        {!bond.bondDiscount ? (*/}
-              {/*          <Skeleton variant="text" width={"150px"} />*/}
-              {/*        ) : (*/}
-              {/*          <Typography variant="body2">*/}
-              {/*            {bond.displayName}*/}
-              {/*            <span className="bond-pair-roi">*/}
-              {/*              {bond.bondDiscount && trim(bond.bondDiscount * 100, 2)}%*/}
-              {/*            </span>*/}
-              {/*          </Typography>*/}
-              {/*        )}*/}
-              {/*      </Link>*/}
-              {/*    ))}*/}
-              {/*  </div>*/}
-              {/*</div>*/}
+              <div className="dapp-menu-data discounts">
+                <div className="bond-discounts">
+                  <Typography variant="body2">Bond discounts</Typography>
+                  {bonds
+                    .filter(bond => bond.active)
+                    .map((bond, i) => (
+                      <Link component={NavLink} to={`/bonds/${bond.name}`} key={i} className={"bond"}>
+                        {!bond.bondDiscount ? (
+                          <Skeleton variant="text" width={"150px"} />
+                        ) : (
+                          <Typography variant="body2">
+                            {bond.displayName}
+                            <span className="bond-pair-roi">
+                              {bond.bondDiscount && trim(bond.bondDiscount * 100, 2)}%
+                            </span>
+                          </Typography>
+                        )}
+                      </Link>
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
