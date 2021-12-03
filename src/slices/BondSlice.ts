@@ -60,6 +60,7 @@ export interface IBondDetails {
   maxBondPrice: number;
   bondPrice: number;
   marketPrice: number;
+  underlyingPrice: number;
 }
 export const calcBondDetails = createAsyncThunk(
   "bonding/calcBondDetails",
@@ -137,6 +138,7 @@ export const calcBondDetails = createAsyncThunk(
 
     // Calculate bonds purchased
     let purchased = await bond.getTreasuryBalance(networkID, provider);
+    let underlyingPrice = await bond.getUnderlyingPrice(networkID, provider);
 
     return {
       bond: bond.name,
@@ -148,6 +150,7 @@ export const calcBondDetails = createAsyncThunk(
       maxBondPrice: maxBondPrice / Math.pow(10, 9),
       bondPrice: bondPrice / Math.pow(10, 18),
       marketPrice: marketPrice,
+      underlyingPrice,
     };
   },
 );

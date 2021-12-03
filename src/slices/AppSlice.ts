@@ -4,7 +4,7 @@ import { abi as OlympusStaking } from "../abi/OlympusStaking.json";
 import { abi as OlympusStakingv2 } from "../abi/OlympusStakingv2.json";
 import { abi as sOHM } from "../abi/sOHM.json";
 import { abi as sOHMv2 } from "../abi/sOhmv2.json";
-import { setAll, getMarketPrice } from "../helpers";
+import { setAll, getMarketPrice, getTokenPrice } from "../helpers";
 import apollo from "../lib/apolloClient.js";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
@@ -67,6 +67,16 @@ export const loadAppDetails = createAsyncThunk(
       return;
     }
 
+    let ethPrice;
+    try {
+      const originalPromiseResult = await dispatch(loadEthPrice()).unwrap();
+      ethPrice = originalPromiseResult?.ethPrice;
+    } catch (rejectedValueOrSerializedError) {
+      // handle error here
+      console.error("Returned a null response from dispatch(loadEthPrice)");
+      return;
+    }
+
     let marketCap, circSupply, totalSupply, treasuryMarketValue;
     if (graphData && graphData.data && graphData.data.protocolMetrics.length > 0) {
       marketCap = parseFloat(graphData.data.protocolMetrics[0].marketCap);
@@ -85,6 +95,7 @@ export const loadAppDetails = createAsyncThunk(
       return {
         stakingTVL,
         marketPrice,
+        ethPrice,
         marketCap,
         circSupply,
         totalSupply,
@@ -126,6 +137,7 @@ export const loadAppDetails = createAsyncThunk(
       stakingRebase,
       marketCap,
       marketPrice,
+      ethPrice,
       circSupply,
       totalSupply,
       treasuryMarketValue,
@@ -188,6 +200,17 @@ const loadMarketPrice = createAsyncThunk("app/loadMarketPrice", async ({ network
   return { marketPrice };
 });
 
+/**
+ * - fetches the OHM price from CoinGecko (via getTokenPrice)
+ * - falls back to fetch marketPrice from ohm-dai contract
+ * - updates the App.slice when it runs
+ */
+const loadEthPrice = createAsyncThunk("app/loadEthPrice", async () => {
+  let ethPrice: number = 0;
+  ethPrice = await getTokenPrice("ethereum");
+  return { ethPrice };
+});
+
 interface IAppData {
   readonly circSupply: number;
   readonly currentIndex?: string;
@@ -201,6 +224,7 @@ interface IAppData {
   readonly totalSupply: number;
   readonly treasuryBalance?: number;
   readonly treasuryMarketValue?: number;
+  readonly ethPrice: number;
 }
 
 const appSlice = createSlice({
