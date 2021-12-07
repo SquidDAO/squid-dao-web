@@ -3,9 +3,10 @@ import { BigNumber, Contract, ethers, utils } from "ethers";
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { Button as MuiButton, FormControl, InputGroup, Spinner } from "react-bootstrap";
 import styled from "styled-components";
+import { abi as erc20Abi } from "../../abi/IERC20.json";
 import { abi as auctionAbi } from "../../abi/SquidAuction.json";
 import { addresses } from "../../constants";
-import { useWeb3Context } from "../../hooks";
+import { useAddress, useWeb3Context } from "../../hooks";
 import { AuctionData } from "../../hooks/auctionContext";
 import { useModalContext } from "./Modal";
 
@@ -28,6 +29,11 @@ const useAuctionContract = () => {
   return new ethers.Contract(addresses[chainID].AUCTION_ADDRESS, auctionAbi, provider.getSigner());
 };
 
+const useOhmContract = () => {
+  const { provider, chainID } = useWeb3Context();
+  return new ethers.Contract(addresses[chainID].OHM_ADDRESS, erc20Abi, provider.getSigner());
+};
+
 interface BidProps {
   auction: AuctionData;
 }
@@ -38,18 +44,41 @@ const minBidEth = (currentBid: BN, minBidIncPct: BN): string => {
   }
 
   const minBidInWei = currentBid.times(minBidIncPct.div(100).plus(1));
-  const eth = Number(utils.formatEther(BigNumber.from(minBidInWei.toString())));
+  const eth = Number(utils.formatUnits(BigNumber.from(minBidInWei.toString()), 9));
   const roundedEth = Math.ceil(eth * 100) / 100;
 
   return roundedEth.toString();
 };
 
-const BidInput: React.FC<BidProps> = ({ auction }) => {
+const OhmBidInput: React.FC<BidProps> = ({ auction }) => {
   const isAuctionEnd = auction.endTime.getTime() < new Date().getTime();
   const auctionContract = useAuctionContract();
 
   const { connected } = useWeb3Context();
   const { onPresent } = useModalContext();
+
+  const [allowance, setAllowance] = useState(BigNumber.from(0));
+  const ohmContract = useOhmContract();
+  const address = useAddress();
+
+  // get allowance
+  useEffect(() => {
+    ohmContract.allowance(address, auctionContract.address).then((a: BigNumber) => {
+      if (!a.eq(allowance)) {
+        setAllowance(a);
+      }
+    });
+  }, [address, allowance, auctionContract.address, ohmContract]);
+
+  const approveHandler = useCallback(async () => {
+    const response = await ohmContract.approve(auctionContract.address, ethers.constants.MaxUint256);
+    setButtonState({ loading: true, content: "" });
+    await response.wait();
+    setButtonState({ loading: false, content: "Approve" });
+
+    const allowance = await ohmContract.allowance(address, auctionContract.address);
+    setAllowance(allowance);
+  }, [address, auctionContract.address, ohmContract]);
 
   const [buttonState, setButtonState] = useState({
     loading: false,
@@ -95,13 +124,10 @@ const BidInput: React.FC<BidProps> = ({ auction }) => {
   const placeBidHandler = useCallback(async () => {
     if (!bidAmount) return;
 
-    const value = utils.parseEther(bidAmount);
+    const value = utils.parseUnits(bidAmount, 9);
     try {
-      const gasLimit = await auctionContract.estimateGas.createBid(auction.auctionId, BigNumber.from(0), {
-        value,
-      });
-      const response = await auctionContract.createBid(auction.auctionId, BigNumber.from(0), {
-        value,
+      const gasLimit = await auctionContract.estimateGas.createBid(auction.auctionId, value);
+      const response = await auctionContract.createBid(auction.auctionId, value, {
         gasLimit: gasLimit.add(10_000), // A 10,000 gas pad is used to avoid 'Out of gas' errors
       });
       setPlaceBidState({ status: "Mining", errorMessage: "" });
@@ -136,31 +162,38 @@ const BidInput: React.FC<BidProps> = ({ auction }) => {
     setButtonState({ loading: false, content: "Settle Auction" });
   };
 
+  const enoughAllowance = !allowance.eq(0) && allowance.gte(utils.parseUnits(bidAmount || "0"));
+
   return (
     <>
       <div className="d-flex">
         {isAuctionEnd ? (
           <AuctionEndedButton onClick={settleAuctionHandler} disabled={!buttonReady}>
-            {buttonState.loading ? <Spinner animation="border" /> : buttonState.content}
+            {buttonState.loading ? <Spinner animation="border" /> : "Settle Auction"}
           </AuctionEndedButton>
         ) : (
           <>
             <div className="position-relative flex-grow-1 d-flex align-items-center">
               <Input type="number" min="0" onChange={bidAmountHandler} value={bidAmount} />
-              <Placeholder>ETH</Placeholder>
+              <Placeholder>OHM</Placeholder>
             </div>
-            <BidButton onClick={placeBidHandler} disabled={!buttonReady}>
-              {buttonState.loading ? <Spinner animation="border" /> : buttonState.content}
-            </BidButton>
+            {enoughAllowance ? (
+              <BidButton onClick={placeBidHandler} disabled={!buttonReady}>
+                {buttonState.loading ? <Spinner animation="border" /> : "Bid"}
+              </BidButton>
+            ) : (
+              <BidButton onClick={approveHandler} disabled={!buttonReady}>
+                {buttonState.loading ? <Spinner animation="border" /> : "Approve"}
+              </BidButton>
+            )}
           </>
         )}
       </div>
       {!isAuctionEnd && (
         <Note>
-          Minimum bid: {minBid} ETH
+          Minimum bid: {minBid} OHM
           <br />
           Each NFT will grant you 1 SquidDAO vote and protocol fee share.
-          <br />
         </Note>
       )}
     </>
@@ -238,4 +271,4 @@ const Note = styled.div`
   margin-top: 1rem;
 `;
 
-export default BidInput;
+export default OhmBidInput;

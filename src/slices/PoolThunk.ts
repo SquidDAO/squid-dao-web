@@ -65,12 +65,12 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS, ierc20Abi, signer);
+    const ssquidContract = new ethers.Contract(addresses[networkID].SSQUID_ADDRESS, ierc20Abi, signer);
 
     let approveTx;
     try {
       if (token === "sohm") {
-        approveTx = await sohmContract.approve(
+        approveTx = await ssquidContract.approve(
           addresses[networkID].PT_PRIZE_POOL_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
@@ -91,7 +91,7 @@ export const changeApproval = createAsyncThunk(
       }
     }
 
-    const depositAllowance = await sohmContract.allowance(address, addresses[networkID].PT_PRIZE_POOL_ADDRESS);
+    const depositAllowance = await ssquidContract.allowance(address, addresses[networkID].PT_PRIZE_POOL_ADDRESS);
 
     return dispatch(
       fetchAccountSuccess({

@@ -16,18 +16,18 @@ import { IBaseAddressAsyncThunk, ICalcUserBondDetailsAsyncThunk } from "./interf
 export const getBalances = createAsyncThunk(
   "account/getBalances",
   async ({ address, networkID, provider }: IBaseAddressAsyncThunk) => {
-    const ohmContract = new ethers.Contract(addresses[networkID].OHM_ADDRESS as string, ierc20Abi, provider);
-    const ohmBalance = await ohmContract.balanceOf(address);
-    const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, ierc20Abi, provider);
-    const sohmBalance = await sohmContract.balanceOf(address);
+    const squidContract = new ethers.Contract(addresses[networkID].SQUID_ADDRESS as string, ierc20Abi, provider);
+    const squidBalance = await squidContract.balanceOf(address);
+    const ssquidContract = new ethers.Contract(addresses[networkID].SSQUID_ADDRESS as string, ierc20Abi, provider);
+    const ssquidBalance = await ssquidContract.balanceOf(address);
     let poolBalance = 0;
     const poolTokenContract = new ethers.Contract(addresses[networkID].PT_TOKEN_ADDRESS as string, ierc20Abi, provider);
     poolBalance = await poolTokenContract.balanceOf(address);
 
     return {
       balances: {
-        ohm: ethers.utils.formatUnits(ohmBalance, "gwei"),
-        sohm: ethers.utils.formatUnits(sohmBalance, "gwei"),
+        ohm: ethers.utils.formatUnits(squidBalance, "gwei"),
+        sohm: ethers.utils.formatUnits(ssquidBalance, "gwei"),
         pool: ethers.utils.formatUnits(poolBalance, "gwei"),
       },
     };
@@ -52,53 +52,35 @@ interface IUserAccountDetails {
 export const loadAccountDetails = createAsyncThunk(
   "account/loadAccountDetails",
   async ({ networkID, provider, address }: IBaseAddressAsyncThunk) => {
-    let ohmBalance = 0;
-    let sohmBalance = 0;
+    let squidBalance = 0;
+    let ssquidBalance = 0;
     let fsohmBalance = 0;
     let wsohmBalance = 0;
     let stakeAllowance = 0;
     let unstakeAllowance = 0;
-    let lpStaked = 0;
-    let pendingRewards = 0;
-    let lpBondAllowance = 0;
     let daiBondAllowance = 0;
-    let aOHMAbleToClaim = 0;
     let poolBalance = 0;
     let poolAllowance = 0;
 
     const daiContract = new ethers.Contract(addresses[networkID].DAI_ADDRESS as string, ierc20Abi, provider);
     const daiBalance = await daiContract.balanceOf(address);
 
-    if (addresses[networkID].OHM_ADDRESS) {
-      const ohmContract = new ethers.Contract(addresses[networkID].OHM_ADDRESS as string, ierc20Abi, provider);
-      ohmBalance = await ohmContract.balanceOf(address);
-      stakeAllowance = await ohmContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
+    if (addresses[networkID].SQUID_ADDRESS) {
+      const squidContract = new ethers.Contract(addresses[networkID].SQUID_ADDRESS as string, ierc20Abi, provider);
+      squidBalance = await squidContract.balanceOf(address);
+      stakeAllowance = await squidContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
     }
 
-    if (addresses[networkID].SOHM_ADDRESS) {
-      const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, sOHMv2, provider);
-      sohmBalance = await sohmContract.balanceOf(address);
-      unstakeAllowance = await sohmContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
-      poolAllowance = await sohmContract.allowance(address, addresses[networkID].PT_PRIZE_POOL_ADDRESS);
+    if (addresses[networkID].SSQUID_ADDRESS) {
+      const ssquidContract = new ethers.Contract(addresses[networkID].SSQUID_ADDRESS as string, sOHMv2, provider);
+      ssquidBalance = await ssquidContract.balanceOf(address);
+      unstakeAllowance = await ssquidContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
+      poolAllowance = await ssquidContract.allowance(address, addresses[networkID].PT_PRIZE_POOL_ADDRESS);
     }
 
     if (addresses[networkID].PT_TOKEN_ADDRESS) {
       const poolTokenContract = await new ethers.Contract(addresses[networkID].PT_TOKEN_ADDRESS, ierc20Abi, provider);
       poolBalance = await poolTokenContract.balanceOf(address);
-    }
-
-    for (const fuseAddressKey of ["FUSE_6_SOHM", "FUSE_18_SOHM"]) {
-      if (addresses[networkID][fuseAddressKey]) {
-        const fsohmContract = await new ethers.Contract(
-          addresses[networkID][fuseAddressKey] as string,
-          fuseProxy,
-          provider,
-        );
-        fsohmContract.signer;
-        const exchangeRate = ethers.utils.formatEther(await fsohmContract.exchangeRateStored());
-        const balance = ethers.utils.formatUnits(await fsohmContract.balanceOf(address), "gwei");
-        fsohmBalance += Number(balance) * Number(exchangeRate);
-      }
     }
 
     if (addresses[networkID].WSOHM_ADDRESS) {
@@ -110,8 +92,8 @@ export const loadAccountDetails = createAsyncThunk(
     return {
       balances: {
         dai: ethers.utils.formatEther(daiBalance),
-        ohm: ethers.utils.formatUnits(ohmBalance, "gwei"),
-        sohm: ethers.utils.formatUnits(sohmBalance, "gwei"),
+        ohm: ethers.utils.formatUnits(squidBalance, "gwei"),
+        sohm: ethers.utils.formatUnits(ssquidBalance, "gwei"),
         fsohm: fsohmBalance,
         wsohm: ethers.utils.formatUnits(wsohmBalance, "gwei"),
         pool: ethers.utils.formatUnits(poolBalance, "gwei"),

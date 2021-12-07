@@ -1,4 +1,5 @@
 import { Typography } from "@material-ui/core";
+import { formatUnits } from "ethers/lib/utils";
 import React, { useEffect, useMemo, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
@@ -15,6 +16,8 @@ import { useReverseENSLookUp } from "../../helpers/ensLookup";
 import useAuctionImage from "../../helpers/useAuctionImages";
 import BidInput from "./BidInput";
 import { useModalContext } from "./Modal";
+import OhmBidInput from "./OhmBidInput";
+import BN from "bignumber.js";
 
 interface AuctionProps {
   auctionId: number;
@@ -30,7 +33,6 @@ const Bid: React.FC<AuctionProps> = ({ auctionId }) => {
   const auctionData = useAuctionData(auctionId);
 
   const auction = useAuctionData(auctionId);
-  const amount = formatEther(auction.amount);
 
   const { onPresent } = useModalContext();
   const historyBids = useMemo(
@@ -41,12 +43,16 @@ const Bid: React.FC<AuctionProps> = ({ auctionId }) => {
             return b.bidTime.getTime() - a.bidTime.getTime();
           })
           .map((bid, idx) => (
-            <BidRecord key={idx} bid={bid} />
+            <BidRecord key={idx} bid={bid} auctionId={auctionId} />
           ))}
       </>
     ),
-    [auction],
+    [auction.bids, auctionId],
   );
+
+  const isOhmAuction = auctionId >= 83 && auctionId <= 94;
+  const currency = isOhmAuction ? "OHM" : "ETH";
+  const amount = isOhmAuction ? new BN(formatUnits(auction.amount, 9)) : formatEther(auction.amount);
 
   return (
     <div className="row gy-4" style={{ flexWrap: "wrap", justifyContent: "center" }}>
@@ -69,14 +75,17 @@ const Bid: React.FC<AuctionProps> = ({ auctionId }) => {
         </div>
         <div className="row gx-5 gy-3 mb-3">
           <div className="col col-auto mb-2 mb-md-0">
-            <CurrentBid bid={amount.toNumber()} />
+            <CurrentBid bid={amount.toNumber()} currency={currency} />
           </div>
           <div className="col col-auto p-0" style={{ width: "1px", backgroundColor: "black" }} />
           <div className="col">
             {auction.settled ? <Winner address={auction.bidder} /> : <BidTimer date={auction.endTime} />}
           </div>
         </div>
-        <Row className="mb-3">{auctionId === lastAuctionId && <BidInput auction={auctionData} />}</Row>
+        <Row className="mb-3">
+          {auctionId === lastAuctionId &&
+            (isOhmAuction ? <OhmBidInput auction={auctionData} /> : <BidInput auction={auctionData} />)}
+        </Row>
         <Row className="mb-3">
           <Col className="d-flex flex-column">
             <div className="d-flex flex-column">
@@ -86,7 +95,7 @@ const Bid: React.FC<AuctionProps> = ({ auctionId }) => {
                 })
                 .slice(0, 3)
                 .map((bid, idx) => (
-                  <BidRecord key={idx} bid={bid} />
+                  <BidRecord key={idx} bid={bid} auctionId={auctionId} />
                 ))}
             </div>
           </Col>
@@ -103,11 +112,13 @@ const Bid: React.FC<AuctionProps> = ({ auctionId }) => {
   );
 };
 
-const CurrentBid: React.FC<{ bid: number }> = ({ bid }) => {
+const CurrentBid: React.FC<{ bid: number; currency: string }> = ({ bid, currency }) => {
   return (
     <div>
       <div style={{ fontSize: "0.75rem", lineHeight: "1.125rem" }}>Current Bid</div>
-      <div style={{ fontSize: "2rem", lineHeight: "3rem", fontWeight: 700 }}>{bid.toFixed(2)} ETH</div>
+      <div style={{ fontSize: "2rem", lineHeight: "3rem", fontWeight: 700 }}>
+        {bid.toFixed(2)} {currency}
+      </div>
     </div>
   );
 };
@@ -170,7 +181,7 @@ const Timer: React.FC<{ t: number; unit: string }> = ({ t, unit }) => {
   );
 };
 
-const BidRecord: React.FC<{ bid: BidData }> = ({ bid }) => {
+const BidRecord: React.FC<{ bid: BidData; auctionId: number }> = ({ bid, auctionId }) => {
   const { chainID } = useWeb3Context();
 
   const openExplorer = (txHash: string) => {
@@ -179,11 +190,17 @@ const BidRecord: React.FC<{ bid: BidData }> = ({ bid }) => {
   };
   const ens = useReverseENSLookUp(bid.bidder);
 
+  const isOhm = auctionId >= 83 && auctionId <= 94;
+
   return (
     <BidRecordWrapper>
       <span style={{ fontSize: "0.75rem" }}>{ens ? ens : shorten(bid.bidder)}</span>
       <span style={{ flexGrow: 1, textAlign: "end", fontSize: "1rem", fontWeight: 500 }}>
-        Ξ {formatEther(bid.bidAmount).toFixed(4)}
+        {isOhm ? (
+          <>{new BN(formatUnits(bid.bidAmount, 9)).toFixed(4)} OHM</>
+        ) : (
+          <>Ξ {formatEther(bid.bidAmount).toFixed(4)}</>
+        )}
       </span>
       <FontAwesomeIcon
         icon={faExternalLinkAlt}

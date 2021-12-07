@@ -109,18 +109,12 @@ export const loadAppDetails = createAsyncThunk(
       OlympusStakingv2,
       provider,
     );
-    const oldStakingContract = new ethers.Contract(
-      addresses[networkID].OLD_STAKING_ADDRESS as string,
-      OlympusStaking,
-      provider,
-    );
-    const sohmMainContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, sOHMv2, provider);
-    const sohmOldContract = new ethers.Contract(addresses[networkID].OLD_SOHM_ADDRESS as string, sOHM, provider);
+    const ssquidMainContract = new ethers.Contract(addresses[networkID].SSQUID_ADDRESS as string, sOHMv2, provider);
 
     // Calculating staking
     const epoch = await stakingContract.epoch();
     const stakingReward = epoch.distribute;
-    const circ = await sohmMainContract.circulatingSupply();
+    const circ = await ssquidMainContract.circulatingSupply();
     const stakingRebase = stakingReward / circ;
     const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
     const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;

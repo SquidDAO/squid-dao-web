@@ -79,6 +79,19 @@
       "anonymous":false,
       "inputs":[
         {
+          "indexed":false,
+          "internalType":"uint256",
+          "name":"duration",
+          "type":"uint256"
+        }
+      ],
+      "name":"AuctionDurationUpdated",
+      "type":"event"
+    },
+    {
+      "anonymous":false,
+      "inputs":[
+        {
           "indexed":true,
           "internalType":"uint256",
           "name":"squidDAONFTId",
@@ -275,6 +288,11 @@
           "internalType":"uint256",
           "name":"squidDAONFTId",
           "type":"uint256"
+        },
+        {
+          "internalType":"uint256",
+          "name":"amount",
+          "type":"uint256"
         }
       ],
       "name":"createBid",
@@ -358,6 +376,21 @@
       "inputs":[
 
       ],
+      "name":"ohm",
+      "outputs":[
+        {
+          "internalType":"address",
+          "name":"",
+          "type":"address"
+        }
+      ],
+      "stateMutability":"view",
+      "type":"function"
+    },
+    {
+      "inputs":[
+
+      ],
       "name":"owner",
       "outputs":[
         {
@@ -424,12 +457,42 @@
     {
       "inputs":[
         {
+          "internalType":"uint256",
+          "name":"_duration",
+          "type":"uint256"
+        }
+      ],
+      "name":"setDuration",
+      "outputs":[
+
+      ],
+      "stateMutability":"nonpayable",
+      "type":"function"
+    },
+    {
+      "inputs":[
+        {
           "internalType":"uint8",
           "name":"_minBidIncrementPercentage",
           "type":"uint8"
         }
       ],
       "name":"setMinBidIncrementPercentage",
+      "outputs":[
+
+      ],
+      "stateMutability":"nonpayable",
+      "type":"function"
+    },
+    {
+      "inputs":[
+        {
+          "internalType":"address",
+          "name":"_ohm",
+          "type":"address"
+        }
+      ],
+      "name":"setOhm",
       "outputs":[
 
       ],

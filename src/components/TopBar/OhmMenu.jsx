@@ -14,11 +14,7 @@ import SSquidImg from "src/assets/tokens/token_sSQUID.png";
 const addTokenToWallet = (tokenSymbol, tokenAddress) => async () => {
   if (window.ethereum) {
     const host = window.location.origin;
-    // NOTE (appleseed): 33T token defaults to sOHM logo since we don't have a 33T logo yet
     let tokenPath;
-    // if (tokenSymbol === "OHM") {
-
-    // } ? OhmImg : SOhmImg;
     switch (tokenSymbol) {
       case "SQUID":
         tokenPath = SquidImg;
@@ -54,8 +50,8 @@ function OhmMenu() {
 
   const networkID = chainID;
 
-  const SOHM_ADDRESS = addresses[networkID].SOHM_ADDRESS;
-  const OHM_ADDRESS = addresses[networkID].OHM_ADDRESS;
+  const SSQUID_ADDRESS = addresses[networkID].SSQUID_ADDRESS;
+  const SQUID_ADDRESS = addresses[networkID].SQUID_ADDRESS;
   const PT_TOKEN_ADDRESS = addresses[networkID].PT_TOKEN_ADDRESS;
 
   const handleClick = target => {
@@ -94,7 +90,7 @@ function OhmMenu() {
               <Paper className="ohm-menu" elevation={1}>
                 <Box component="div" className="buy-tokens">
                   <Link
-                    href={`https://cowswap.exchange/#/swap?referral=0x42e61987a5cba002880b3cc5c800952a5804a1c5&inputCurrency=${wethAddress}&outputCurrency=${OHM_ADDRESS}`}
+                    href={`https://cowswap.exchange/#/swap?referral=0x42e61987a5cba002880b3cc5c800952a5804a1c5&inputCurrency=${wethAddress}&outputCurrency=${SQUID_ADDRESS}`}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -146,7 +142,7 @@ function OhmMenu() {
                         variant="contained"
                         color="secondary"
                         style={{ maxHeight: "unset" }}
-                        onClick={addTokenToWallet("SQUID", OHM_ADDRESS)}
+                        onClick={addTokenToWallet("SQUID", SQUID_ADDRESS)}
                       >
                         <img src={SquidImg} style={{ height: "35px", width: "35px" }} />
                         <Typography variant="body1">SQUID</Typography>
@@ -155,7 +151,7 @@ function OhmMenu() {
                         variant="contained"
                         color="secondary"
                         style={{ maxHeight: "unset" }}
-                        onClick={addTokenToWallet("sSQUID", SOHM_ADDRESS)}
+                        onClick={addTokenToWallet("sSQUID", SSQUID_ADDRESS)}
                       >
                         <img src={SSquidImg} style={{ height: "35px", width: "35px" }} />
                         <Typography variant="body1">sSQUID</Typography>

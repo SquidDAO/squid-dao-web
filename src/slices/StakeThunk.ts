@@ -27,17 +27,17 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const ohmContract = new ethers.Contract(addresses[networkID].OHM_ADDRESS as string, ierc20Abi, signer);
-    const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, ierc20Abi, signer);
+    const squidContract = new ethers.Contract(addresses[networkID].SQUID_ADDRESS as string, ierc20Abi, signer);
+    const ssquidContract = new ethers.Contract(addresses[networkID].SSQUID_ADDRESS as string, ierc20Abi, signer);
     let approveTx;
     try {
       if (token === "ohm") {
-        approveTx = await ohmContract.approve(
+        approveTx = await squidContract.approve(
           addresses[networkID].STAKING_HELPER_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
       } else if (token === "sohm") {
-        approveTx = await sohmContract.approve(
+        approveTx = await ssquidContract.approve(
           addresses[networkID].STAKING_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
@@ -56,8 +56,8 @@ export const changeApproval = createAsyncThunk(
       }
     }
 
-    const stakeAllowance = await ohmContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
-    const unstakeAllowance = await sohmContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
+    const stakeAllowance = await squidContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
+    const unstakeAllowance = await ssquidContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
     return dispatch(
       fetchAccountSuccess({
         staking: {
