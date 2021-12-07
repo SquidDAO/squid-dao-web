@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 import ReactGA from "react-ga4";
-const TRACKING_ID = "G-TKEFGWGLPM";
+const TRACKING_ID = "G-MQYR8021LF";
 
 export default function useGoogleAnalytics() {
   const location = useLocation();
