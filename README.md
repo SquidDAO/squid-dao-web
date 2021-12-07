@@ -1,5 +1,5 @@
 # [🦑 SQUID DAO Frontend](https://squid.xyz/)
-This is the front-end repo for SQUID DAO that allows users be part of the future of Greece.
+This is the front-end repo for SQUID DAO.
 
 ##  🔧 Setting up Local Development
 
