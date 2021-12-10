@@ -111,20 +111,20 @@ function NavContent() {
                 </Typography>
               </Link>
 
-              <Link
-                component={NavLink}
-                id="treasury-nav"
-                to="/treasury"
-                isActive={(match, location) => {
-                  return checkPage(match, location, "treasury");
-                }}
-                className={`button-dapp-menu ${isActive ? "active" : ""}`}
-              >
-                <Typography variant="h6">
-                  <SvgIcon color="primary" component={TreasuryIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />
-                  Treasury
-                </Typography>
-              </Link>
+              {/*<Link*/}
+              {/*  component={NavLink}*/}
+              {/*  id="treasury-nav"*/}
+              {/*  to="/treasury"*/}
+              {/*  isActive={(match, location) => {*/}
+              {/*    return checkPage(match, location, "treasury");*/}
+              {/*  }}*/}
+              {/*  className={`button-dapp-menu ${isActive ? "active" : ""}`}*/}
+              {/*>*/}
+              {/*  <Typography variant="h6">*/}
+              {/*    <SvgIcon color="primary" component={TreasuryIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />*/}
+              {/*    Treasury*/}
+              {/*  </Typography>*/}
+              {/*</Link>*/}
 
               <Link
                 component={NavLink}
