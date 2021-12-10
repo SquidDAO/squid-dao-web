@@ -61,6 +61,7 @@ export const loadAccountDetails = createAsyncThunk(
     let daiBondAllowance = 0;
     let poolBalance = 0;
     let poolAllowance = 0;
+    let sSquidAllowance = 0;
 
     const daiContract = new ethers.Contract(addresses[networkID].DAI_ADDRESS as string, ierc20Abi, provider);
     const daiBalance = await daiContract.balanceOf(address);
@@ -76,6 +77,7 @@ export const loadAccountDetails = createAsyncThunk(
       ssquidBalance = await ssquidContract.balanceOf(address);
       unstakeAllowance = await ssquidContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
       poolAllowance = await ssquidContract.allowance(address, addresses[networkID].PT_PRIZE_POOL_ADDRESS);
+      sSquidAllowance = await ssquidContract.allowance(address, addresses[networkID].VOTING_ESCROW_HELPER_ADDRESS);
     }
 
     if (addresses[networkID].PT_TOKEN_ADDRESS) {
@@ -107,6 +109,9 @@ export const loadAccountDetails = createAsyncThunk(
       },
       pooling: {
         sohmPool: +poolAllowance,
+      },
+      votingEscrow: {
+        sSquidStake: +sSquidAllowance,
       },
     };
   },

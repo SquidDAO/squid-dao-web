@@ -40,6 +40,22 @@ export interface IZapAsyncThunk extends IBaseAddressAsyncThunk {
   readonly slippage: number;
 }
 
+// VotingEscrow Slice
+
+export interface IIncreaseAmountThunk extends IBaseAddressAsyncThunk {
+  readonly sSQUIDAmount: string;
+}
+
+export interface IIncreaseUnlockTimeThunk extends IBaseAddressAsyncThunk {
+  readonly unlockTime: number;
+}
+
+export interface ICreateLockThunk extends IIncreaseAmountThunk, IIncreaseUnlockTimeThunk {}
+
+export interface IWithdrawThunk extends IBaseAddressAsyncThunk {}
+
+export interface IClaimThunk extends IBaseAddressAsyncThunk {}
+
 // Account Slice
 
 export interface ICalcUserBondDetailsAsyncThunk extends IBaseAddressAsyncThunk, IBaseBondAsyncThunk {}

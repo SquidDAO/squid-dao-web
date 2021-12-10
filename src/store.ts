@@ -7,6 +7,7 @@ import poolDataReducer from "./slices/PoolThunk";
 import lusdDataReducer from "./slices/LusdSlice";
 import messagesReducer from "./slices/MessagesSlice";
 import zapReducer from "./slices/ZapSlice";
+import votingEscrowReducer from "./slices/VotingEscrowSlice";
 // reducers are named automatically based on the name field in the slice
 // exported in slice files by default as nameOfSlice.reducer
 
@@ -22,6 +23,7 @@ const store = configureStore({
     lusdData: lusdDataReducer,
     messages: messagesReducer,
     zap: zapReducer,
+    votingEscrow: votingEscrowReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });

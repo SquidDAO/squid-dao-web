@@ -49,7 +49,10 @@ export function formatEth(c: number, precision = 0) {
   return "Ξ " + commify(new BN(c).toFixed(precision));
 }
 
-export function commify(n: string | number) {
+export function commify(n: string | number, precision?: number) {
+  if (precision) {
+    n = new BN(n).toFixed(precision);
+  }
   const parts = n.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return parts.join(".");

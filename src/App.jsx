@@ -17,7 +17,7 @@ import { loadAppDetails } from "./slices/AppSlice";
 import { loadAccountDetails, calculateUserBondDetails } from "./slices/AccountSlice";
 import { getZapTokenBalances } from "./slices/ZapSlice";
 
-import { Stake, ChooseBond, Bond, Dashboard, TreasuryDashboard } from "./views";
+import { Stake, ChooseBond, Bond, Dashboard, TreasuryDashboard, Treasury } from "./views";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NavDrawer from "./components/Sidebar/NavDrawer.jsx";
@@ -31,6 +31,7 @@ import { girth as gTheme } from "./themes/girth.js";
 import "./style.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Auction from "./views/Auction/Auction";
+import { loadDetails as loadVeDetails } from "./slices/VotingEscrowSlice";
 
 // 😬 Sorry for all the console logging
 const DEBUG = false;
@@ -131,6 +132,7 @@ function App() {
         dispatch(calculateUserBondDetails({ address, bond, provider, networkID: chainID }));
       });
       dispatch(getZapTokenBalances({ address, networkID: chainID, provider: loadProvider }));
+      dispatch(loadVeDetails({ address, networkID: chainID, provider }));
     },
     [connected],
   );
@@ -218,6 +220,10 @@ function App() {
             <Route path="/stake">
               <Stake />
             </Route>
+
+            {/*<Route path="/treasury">*/}
+            {/*  <Treasury />*/}
+            {/*</Route>*/}
 
             <Route path="/auction" exact>
               <Auction />

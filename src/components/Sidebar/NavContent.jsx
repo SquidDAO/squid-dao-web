@@ -7,6 +7,7 @@ import { ReactComponent as AuctionIcon } from "../../assets/icons/auction.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
 import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
 import { ReactComponent as SquidIcon } from "../../assets/icons/squid.svg";
+import { ReactComponent as TreasuryIcon } from "../../assets/icons/treasury.svg";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
 import useBonds from "../../hooks/Bonds";
@@ -29,6 +30,9 @@ function NavContent() {
       return true;
     }
     if (currentPath.indexOf("stake") >= 0 && page === "stake") {
+      return true;
+    }
+    if (currentPath.indexOf("treasury") >= 0 && page === "treasury") {
       return true;
     }
     if ((currentPath.indexOf("bonds") >= 0 || currentPath.indexOf("choose_bond") >= 0) && page === "bonds") {
@@ -104,6 +108,21 @@ function NavContent() {
                 <Typography variant="h6">
                   <SvgIcon color="primary" component={StakeIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />
                   Stake
+                </Typography>
+              </Link>
+
+              <Link
+                component={NavLink}
+                id="treasury-nav"
+                to="/treasury"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "treasury");
+                }}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+              >
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={TreasuryIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />
+                  Treasury
                 </Typography>
               </Link>
 
