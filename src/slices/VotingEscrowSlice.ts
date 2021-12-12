@@ -7,6 +7,7 @@ import { abi as ierc20Abi } from "../abi/IERC20.json";
 import { abi as votingEscrow } from "../abi/VotingEscrow.json";
 import { abi as votingEscrowHelper } from "../abi/VotingEscrowHelper.json";
 import { abi as feeDistributor } from "../abi/FeeDistributor.json";
+import { abi as wsSquid } from "../abi/wsSQUID.json";
 import { error, info } from "./MessagesSlice";
 import { RootState } from "src/store";
 import { BigNumber, ethers } from "ethers";
@@ -33,11 +34,16 @@ export const loadDetails = createAsyncThunk(
       feeDistributor,
       provider,
     );
+    const wsSquidContract = new ethers.Contract(addresses[networkID].WSSQUID_ADDRESS, wsSquid, provider);
+
     const balance = await votingEscrowContract["balanceOf(address)"](address);
-    const { amount: lockedBalance, end: unlockTime } = await votingEscrowContract.locked(address);
+    const { amount: lockedWSSquidBalance, end: unlockTime } = await votingEscrowContract.locked(address);
     const totalSupply = await votingEscrowContract["totalSupply()"]();
     const supply = await votingEscrowContract.supply();
     const claimable = await feeDistributorContract.callStatic["claim(address)"](address);
+    const lockedBalance = await wsSquidContract.sSQUIDValue(lockedWSSquidBalance);
+    // wsSQUIDValue of 1 sSQUID
+    const wsSQUIDValue = await wsSquidContract.wsSQUIDValue(ethers.utils.parseUnits("1", "gwei"));
 
     return {
       stake: {
@@ -49,6 +55,9 @@ export const loadDetails = createAsyncThunk(
       },
       reward: {
         claimable: ethers.utils.formatEther(claimable),
+      },
+      value: {
+        wsSquid: ethers.utils.formatEther(wsSQUIDValue),
       },
     };
   },
@@ -278,12 +287,16 @@ interface IVotingEscrowSlice {
   reward: {
     claimable: string;
   };
+  value: {
+    wsSquid: string;
+  };
   loading: boolean;
 }
 
 const initialState: IVotingEscrowSlice = {
   loading: false,
   stake: { balance: "0", lockedBalance: "0", unlockTime: "0", totalSupply: "0", supply: "0" },
+  value: { wsSquid: "0" },
   reward: { claimable: "0" },
 };
 

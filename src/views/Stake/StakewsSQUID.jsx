@@ -26,6 +26,7 @@ import format from "date-fns/format";
 import { changeApproval, createLock } from "../../slices/VotingEscrowSlice";
 import { isPendingTxn, txnButtonText } from "../../slices/PendingTxnsSlice";
 import { commify } from "../../helpers";
+import { addSeconds } from "date-fns";
 
 function a11yProps(index) {
   return {
@@ -58,6 +59,7 @@ function Stake() {
   const unlockTime = useSelector(state => state.votingEscrow.stake.unlockTime);
   const hasLocked = useSelector(state => state.votingEscrow.stake.unlockTime !== "0");
   const reward = useSelector(state => state.votingEscrow.reward.claimable);
+  const wsSquidRate = useSelector(state => Number(state.votingEscrow.value.wsSquid));
 
   const setMax = () => {
     setQuantity(sSquidBalance);
@@ -76,10 +78,10 @@ function Stake() {
 
     let gweiValue = ethers.utils.parseUnits(quantity, "gwei");
     if (gweiValue.gt(ethers.utils.parseUnits(sSquidBalance, "gwei"))) {
-      return dispatch(error("You cannot stake more than your sSQUID balance."));
+      return dispatch(error("You cannot lock more than your sSQUID balance."));
     }
 
-    const unlockTime = Math.floor(addYears(new Date(), stakeYear).getTime() / 1000);
+    const unlockTime = Math.floor(addSeconds(new Date(), stakeYear * 365 * 86400).getTime() / 1000);
 
     await dispatch(createLock({ address, networkID: chainID, provider, sSQUIDAmount: gweiValue, unlockTime }));
   };
@@ -121,7 +123,7 @@ function Stake() {
                   className={`stake-card ${info.duration === stakeYear && "active"}`}
                   onClick={() => setStakeYear(info.duration)}
                 >
-                  <div style={{ fontSize: "16px", fontWeight: "600", color: "#200A2B" }}>Stake sSQUID for</div>
+                  <div style={{ fontSize: "16px", fontWeight: "600", color: "#200A2B" }}>Lock sSQUID for</div>
                   <div style={{ fontSize: "24px", fontWeight: "600", color: "#7F7FD5", margin: "10px 0" }}>
                     <span style={{ fontSize: "32px" }}>{info.duration}</span> Year
                   </div>
@@ -151,7 +153,7 @@ function Stake() {
               onChange={changeView}
               aria-label="bond tabs"
             >
-              <Tab label="Stake sSQUID" {...a11yProps(0)} />
+              <Tab label="Lock sSQUID" {...a11yProps(0)} />
               {/*<Tab label="Unstake" {...a11yProps(1)} />*/}
             </Tabs>
 
@@ -161,9 +163,9 @@ function Stake() {
                   {address && !hasAllowance ? (
                     <>
                       <div style={{ textAlign: "left", lineHeight: "16px" }}>
-                        First time staking sSQUID?
+                        First time locking sSQUID?
                         <br />
-                        Please approve Squid Dao to use your sSQUID for staking
+                        Please approve Squid Dao to use your sSQUID for locking
                       </div>
                       <Button variant="contained" color="primary" onClick={() => onApproval()}>
                         {txnButtonText(pendingTransactions, "approve_staking", "Approve")}
@@ -201,7 +203,7 @@ function Stake() {
                               onStake();
                             }}
                           >
-                            {txnButtonText(pendingTransactions, "create_lock", "Stake sSQUID")}
+                            {txnButtonText(pendingTransactions, "create_lock", "Lock sSQUID")}
                           </Button>
                         ) : (
                           <Button
@@ -227,15 +229,19 @@ function Stake() {
                   </Typography>
                 </div>
                 <div className="data-row">
-                  <Typography>Your Staked Balance</Typography>
+                  <Typography>Your Locked Balance</Typography>
                   <Typography>
-                    {isLoading ? <Skeleton width="100px" /> : <>{commify(lockedBalance, 6)} vewsSQUID</>}
+                    {isLoading ? <Skeleton width="100px" /> : <>{commify(lockedBalance, 6)} sSQUID</>}
                   </Typography>
                 </div>
                 <div className="data-row">
                   <Typography>Mint Ratio</Typography>
                   <Typography>
-                    {isLoading ? <Skeleton width="100px" /> : <>{0.25 * stakeYear} vewsSQIOD per sSQUID</>}
+                    {isLoading ? (
+                      <Skeleton width="100px" />
+                    ) : (
+                      <>{(0.25 * stakeYear * wsSquidRate).toFixed(6)} vewsSQUID per sSQUID</>
+                    )}
                   </Typography>
                 </div>
                 <div className="data-row">
@@ -244,7 +250,7 @@ function Stake() {
                 </div>
                 {!isLoading && hasLocked && (
                   <div>
-                    Unstake and rewards available in{" "}
+                    Unlock available in{" "}
                     <span style={{ color: "#7F7FD5" }}>
                       {format(new Date(Number(unlockTime) * 1000), "MMM dd, yyyy")}
                     </span>
