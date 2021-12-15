@@ -90,6 +90,9 @@ import auction88 from "../assets/images/auctions/88.png";
 import auction89 from "../assets/images/auctions/89.png";
 import auction90 from "../assets/images/auctions/90.png";
 import auction91 from "../assets/images/auctions/91.png";
+import auction92 from "../assets/images/auctions/92.png";
+import auction93 from "../assets/images/auctions/93.png";
+import auction94 from "../assets/images/auctions/94.png";
 
 const auctionImages: { [symbol: string]: any } = {
   0: auction0,
@@ -184,6 +187,9 @@ const auctionImages: { [symbol: string]: any } = {
   89: auction89,
   90: auction90,
   91: auction91,
+  92: auction92,
+  93: auction93,
+  94: auction94,
 };
 
 const useAuctionImage = (auctionId: number) => {
