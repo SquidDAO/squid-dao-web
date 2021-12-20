@@ -240,7 +240,7 @@ function Stake() {
                     {isLoading ? (
                       <Skeleton width="100px" />
                     ) : (
-                      <>{(0.25 * stakeYear * wsSquidRate).toFixed(6)} vewsSQUID per sSQUID</>
+                      !hasLocked && <>{(0.25 * stakeYear * wsSquidRate).toFixed(6)} vewsSQUID per sSQUID</>
                     )}
                   </Typography>
                 </div>
