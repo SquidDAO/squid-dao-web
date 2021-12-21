@@ -50,7 +50,7 @@ const Bid: React.FC<AuctionProps> = ({ auctionId }) => {
     [auction.bids, auctionId],
   );
 
-  const isOhmAuction = auctionId >= 83 && auctionId <= 94;
+  const isOhmAuction = auctionId >= 83 && auctionId <= 93;
   const currency = isOhmAuction ? "OHM" : "ETH";
   const amount = isOhmAuction ? new BN(formatUnits(auction.amount, 9)) : formatEther(auction.amount);
 
