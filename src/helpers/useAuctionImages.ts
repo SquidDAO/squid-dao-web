@@ -98,6 +98,15 @@ import auction96 from "../assets/images/auctions/96.png";
 import auction97 from "../assets/images/auctions/97.png";
 import auction98 from "../assets/images/auctions/98.png";
 import auction99 from "../assets/images/auctions/99.png";
+import auction100 from "../assets/images/auctions/100.png";
+import auction101 from "../assets/images/auctions/101.png";
+import auction102 from "../assets/images/auctions/102.png";
+import auction103 from "../assets/images/auctions/103.png";
+import auction104 from "../assets/images/auctions/104.png";
+import auction105 from "../assets/images/auctions/105.png";
+import auction106 from "../assets/images/auctions/106.png";
+import auction107 from "../assets/images/auctions/107.png";
+import auction108 from "../assets/images/auctions/108.png";
 
 const auctionImages: { [symbol: string]: any } = {
   0: auction0,
@@ -200,6 +209,15 @@ const auctionImages: { [symbol: string]: any } = {
   97: auction97,
   98: auction98,
   99: auction99,
+  100: auction100,
+  101: auction101,
+  102: auction102,
+  103: auction103,
+  104: auction104,
+  105: auction105,
+  106: auction106,
+  107: auction107,
+  108: auction108,
 };
 
 const useAuctionImage = (auctionId: number) => {
