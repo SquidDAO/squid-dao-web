@@ -10,7 +10,7 @@ const Stats: React.FC<{ treasuryBalance: number; stakingAPY: number; tvl: number
   return (
     <div className="row g-4 d-flex justify-content-around">
       <Stat title="Treasury Balance" value={formatEth(treasuryBalance)} />
-      <Stat title="Current APY" value={trim(stakingAPY * 100, 1) + "%"} />
+      <Stat title="Current APY" value={new Intl.NumberFormat("en-US").format(trim(stakingAPY * 100, 1)) + "%"} />
       <Stat title="Total Value Deposited" value={formatEth(tvl)} />
     </div>
   );
