@@ -15,6 +15,11 @@ const externalUrls = [
     url: "https://squid-dao.gitbook.io/squiddao/",
     icon: <SvgIcon color="primary" component={DocsIcon} style={{ fill: "none" }} />,
   },
+  {
+    title: "Governance",
+    url: "https://vote.squid.xyz",
+    icon: <SvgIcon color="primary" component={GovIcon} style={{ fill: "none" }} />,
+  },
 ];
 
 export default externalUrls;
