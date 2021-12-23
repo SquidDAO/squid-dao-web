@@ -32,6 +32,7 @@ import "./style.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Auction from "./views/Auction/Auction";
 import { loadDetails as loadVeDetails } from "./slices/VotingEscrowSlice";
+import Lock from "./views/Lock/Lock";
 
 // 😬 Sorry for all the console logging
 const DEBUG = false;
@@ -219,6 +220,10 @@ function App() {
 
             <Route path="/stake">
               <Stake />
+            </Route>
+
+            <Route path="/lock">
+              <Lock />
             </Route>
 
             {/*<Route path="/treasury">*/}

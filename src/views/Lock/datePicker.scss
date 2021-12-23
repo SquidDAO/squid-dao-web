@@ -1,0 +1,10 @@
+.react-date-picker__wrapper {
+  display: none !important;
+  flex-grow: 1;
+  flex-shrink: 0;
+  border: thin solid gray;
+}
+
+.react-date-picker__calendar {
+  z-index: 100 !important;
+}

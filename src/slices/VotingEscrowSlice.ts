@@ -294,7 +294,7 @@ interface IVotingEscrowSlice {
 }
 
 const initialState: IVotingEscrowSlice = {
-  loading: false,
+  loading: true,
   stake: { balance: "0", lockedBalance: "0", unlockTime: "0", totalSupply: "0", supply: "0" },
   value: { wsSquid: "0" },
   reward: { claimable: "0" },

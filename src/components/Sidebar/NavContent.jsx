@@ -8,6 +8,7 @@ import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
 import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
 import { ReactComponent as SquidIcon } from "../../assets/icons/squid.svg";
 import { ReactComponent as TreasuryIcon } from "../../assets/icons/treasury.svg";
+import { ReactComponent as LockIcon } from "../../assets/icons/lock.svg";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
 import useBonds from "../../hooks/Bonds";
@@ -30,6 +31,9 @@ function NavContent() {
       return true;
     }
     if (currentPath.indexOf("stake") >= 0 && page === "stake") {
+      return true;
+    }
+    if (currentPath.indexOf("lock") >= 0 && page === "lock") {
       return true;
     }
     if (currentPath.indexOf("treasury") >= 0 && page === "treasury") {
@@ -108,6 +112,21 @@ function NavContent() {
                 <Typography variant="h6">
                   <SvgIcon color="primary" component={StakeIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />
                   Stake
+                </Typography>
+              </Link>
+
+              <Link
+                component={NavLink}
+                id="lock-nav"
+                to="/lock"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "lock");
+                }}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+              >
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={LockIcon} style={{ fill: "none" }} viewBox="0 0 25 24" />
+                  Lock
                 </Typography>
               </Link>
 

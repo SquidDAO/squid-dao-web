@@ -50,6 +50,9 @@ export function formatEth(c: number, precision = 0) {
 }
 
 export function commify(n: string | number, precision?: number) {
+  if (Number(n) === 0) {
+    return "0";
+  }
   if (precision) {
     n = new BN(n).toFixed(precision);
   }

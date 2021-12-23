@@ -1,0 +1,64 @@
+#lock-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  .lock-card {
+    background: #f3f3f3;
+    border-radius: 10px;
+    padding: 20px 20px;
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      margin: 12px 0;
+    }
+
+    .inner-card {
+      padding: 20px;
+      border-radius: 10px;
+      background: #fff;
+
+      .header {
+        margin-bottom: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.5rem;
+      }
+    }
+
+    &.head {
+      .title {
+        color: #8f8f8f;
+      }
+      .value {
+        font-weight: 600;
+        font-size: 1.25rem;
+        line-height: 2.25rem;
+      }
+    }
+
+    &.mid {
+      .title {
+        font-weight: 600;
+        margin-bottom: 0.625rem;
+        font-size: 1rem;
+      }
+    }
+
+    &.reward {
+      height: 100%;
+      .title {
+        color: #8f8f8f;
+      }
+      .value {
+        font-weight: 600;
+        font-size: 2rem;
+        line-height: 3.75rem;
+      }
+    }
+  }
+}
