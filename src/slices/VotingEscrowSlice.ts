@@ -257,7 +257,7 @@ export const claim = createAsyncThunk(
     );
     let claimTx;
     try {
-      claimTx = await feeDistributorContract.claim(address);
+      claimTx = await feeDistributorContract["claim(address)"](address);
       const text = "Claim";
       const pendingTxnType = "claim";
       dispatch(fetchPendingTxns({ txnHash: claimTx.hash, text, type: pendingTxnType }));
