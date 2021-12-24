@@ -60,6 +60,7 @@ export function BondDataCard({ bond }) {
 export function BondTableData({ bond }) {
   // Use BondPrice as indicator of loading.
   const isBondLoading = !bond.bondPrice ?? true;
+  const isSoldOut = bond.soldOut;
   // const isBondLoading = useSelector(state => !state.bonding[bond]?.bondPrice ?? true);
 
   return (
@@ -83,14 +84,18 @@ export function BondTableData({ bond }) {
           <>{isBondLoading ? <Skeleton width="50px" /> : formatEth(bond.bondPrice, 2)}</>
         </Typography>
       </TableCell>
-      <TableCell align="left">{isBondLoading ? <Skeleton /> : `${trim(bond.bondDiscount * 100, 2)}%`}</TableCell>
+      <TableCell align="left">
+        {isBondLoading ? <Skeleton /> : isSoldOut ? "Sold Out" : `${trim(bond.bondDiscount * 100, 2)}%`}
+      </TableCell>
       <TableCell align="right">{isBondLoading ? <Skeleton /> : formatEth(bond.purchased)}</TableCell>
       <TableCell>
-        <Link component={NavLink} to={`/bonds/${bond.name}`}>
-          <Button variant="outlined" color="primary">
-            <Typography variant="h6">Bond</Typography>
-          </Button>
-        </Link>
+        {!isSoldOut && (
+          <Link component={NavLink} to={`/bonds/${bond.name}`}>
+            <Button variant="outlined" color="primary">
+              <Typography variant="h6">Bond</Typography>
+            </Button>
+          </Link>
+        )}
       </TableCell>
     </TableRow>
   );
