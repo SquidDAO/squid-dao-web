@@ -40,18 +40,28 @@ export function BondDataCard({ bond }) {
 
         <div className="data-row">
           <Typography>ROI</Typography>
-          <Typography>{isBondLoading ? <Skeleton width="50px" /> : `${trim(bond.bondDiscount * 100, 2)}%`}</Typography>
+          <Typography>
+            {isBondLoading ? (
+              <Skeleton width="50px" />
+            ) : bond.soldOut ? (
+              "Sold Out"
+            ) : (
+              `${trim(bond.bondDiscount * 100, 2)}%`
+            )}
+          </Typography>
         </div>
 
         <div className="data-row">
           <Typography>Purchased</Typography>
           <Typography>{isBondLoading ? <Skeleton width="80px" /> : formatEth(bond.purchased)}</Typography>
         </div>
-        <Link component={NavLink} to={`/bonds/${bond.name}`}>
-          <Button variant="outlined" color="primary" fullWidth>
-            <Typography variant="h5">Bond {bond.displayName}</Typography>
-          </Button>
-        </Link>
+        {!bond.soldOut && (
+          <Link component={NavLink} to={`/bonds/${bond.name}`}>
+            <Button variant="outlined" color="primary" fullWidth>
+              <Typography variant="h5">Bond {bond.displayName}!!!</Typography>
+            </Button>
+          </Link>
+        )}
       </Paper>
     </Slide>
   );
