@@ -351,7 +351,7 @@ function Lock() {
                   )}
                   {!isLoading && hasLocked && (
                     <div>
-                      Unlock available in{" "}
+                      Unlock available on{" "}
                       <span style={{ color: "#7F7FD5" }}>
                         {format(new Date(Number(unlockTime) * 1000), "MMM dd, yyyy")}
                       </span>
