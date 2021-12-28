@@ -126,14 +126,14 @@ function Lock() {
       <Grid container spacing={2} className="stake-top-metrics">
         <Grid item xs={12} sm={6} md={6} lg={6}>
           <div className="lock-card head">
-            <div className="title">Your vewsSQUID Balance</div>
-            <div className="value">{commify(balance, 6)} vewsSQUID</div>
+            <div className="title">Your veSQUID Balance</div>
+            <div className="value">{commify(balance, 6)} veSQUID</div>
           </div>
         </Grid>
         <Grid item xs={12} sm={6} md={6} lg={6}>
           <div className="lock-card head">
-            <div className="title">Total vewsSQUID Balance</div>
-            <div className="value">{commify(totalSupply, 6)} vewsSQUID</div>
+            <div className="title">Total veSQUID Balance</div>
+            <div className="value">{commify(totalSupply, 6)} veSQUID</div>
           </div>
         </Grid>
         {isLocking && (
@@ -345,13 +345,13 @@ function Lock() {
                     <div className="data-row">
                       <Typography>Mint Ratio</Typography>
                       <Typography>
-                        {isLoading ? <Skeleton width="100px" /> : <>{mintRatio.toFixed(6)} vewsSQUID per sSQUID</>}
+                        {isLoading ? <Skeleton width="100px" /> : <>{mintRatio.toFixed(6)} veSQUID per sSQUID</>}
                       </Typography>
                     </div>
                   )}
                   {!isLoading && hasLocked && (
                     <div>
-                      Unlock available in{" "}
+                      Unlock available on{" "}
                       <span style={{ color: "#7F7FD5" }}>
                         {format(new Date(Number(unlockTime) * 1000), "MMM dd, yyyy")}
                       </span>
