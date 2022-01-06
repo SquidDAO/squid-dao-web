@@ -33,6 +33,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Auction from "./views/Auction/Auction";
 import { loadDetails as loadVeDetails } from "./slices/VotingEscrowSlice";
 import Lock from "./views/Lock/Lock";
+import Wrap from "./views/Wrap/Wrap";
 
 // 😬 Sorry for all the console logging
 const DEBUG = false;
@@ -226,9 +227,9 @@ function App() {
               <Lock />
             </Route>
 
-            {/*<Route path="/treasury">*/}
-            {/*  <Treasury />*/}
-            {/*</Route>*/}
+            <Route path="/wrap">
+              <Wrap />
+            </Route>
 
             <Route path="/auction" exact>
               <Auction />
