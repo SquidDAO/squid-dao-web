@@ -48,13 +48,14 @@ function Lock() {
   const unlockTime = useSelector(state => state.votingEscrow.stake.unlockTime);
   const hasLocked = useSelector(state => state.votingEscrow.stake.unlockTime !== "0");
   const reward = useSelector(state => state.votingEscrow.reward.claimable);
+  const wethReward = useSelector(state => state.votingEscrow.reward.wethClaimable);
   const wsSquidRate = useSelector(state => Number(state.votingEscrow.value.wsSquid));
   const balance = useSelector(state => state.votingEscrow.stake.balance);
   const totalSupply = useSelector(state => state.votingEscrow.stake.totalSupply);
 
   const isLocking = Number(unlockTime) * 1000 > Date.now();
 
-  const hasReward = Number(reward) !== 0;
+  const hasReward = Number(reward) !== 0 || Number(wethReward) !== 0;
 
   const setMax = () => {
     setQuantity(sSquidBalance);
@@ -223,6 +224,7 @@ function Lock() {
           <div className="lock-card reward d-flex flex-column justify-content-center">
             <div className="title">Claimable Rewards</div>
             <div className="value">{commify(reward, 6)} wsSQUID</div>
+            <div className="value">{commify(reward, 6)} wETH</div>
             {hasReward && (
               <div>
                 <Button

@@ -8,6 +8,7 @@ import { abi as votingEscrow } from "../abi/VotingEscrow.json";
 import { abi as votingEscrowHelper } from "../abi/VotingEscrowHelper.json";
 import { abi as feeDistributor } from "../abi/FeeDistributor.json";
 import { abi as wsSquid } from "../abi/wsSQUID.json";
+import { abi as feeClaimHelper } from "../abi/FeeClaimHelper.json";
 import { error, info } from "./MessagesSlice";
 import { RootState } from "src/store";
 import { BigNumber, ethers } from "ethers";
@@ -34,6 +35,11 @@ export const loadDetails = createAsyncThunk(
       feeDistributor,
       provider,
     );
+    const wethFeeDistributorContract = new ethers.Contract(
+      addresses[networkID].WETH_FEE_DISTRIBUTOR_ADDRESS,
+      feeDistributor,
+      provider,
+    );
     const wsSquidContract = new ethers.Contract(addresses[networkID].WSSQUID_ADDRESS, wsSquid, provider);
 
     const balance = await votingEscrowContract["balanceOf(address)"](address);
@@ -41,6 +47,7 @@ export const loadDetails = createAsyncThunk(
     const totalSupply = await votingEscrowContract["totalSupply()"]();
     const supply = await votingEscrowContract.supply();
     const claimable = await feeDistributorContract.callStatic["claim(address)"](address);
+    const wethClaimable = await wethFeeDistributorContract.callStatic["claim(address)"](address);
     const lockedBalance = await wsSquidContract.sSQUIDValue(lockedWSSquidBalance);
     // wsSQUIDValue of 1 sSQUID
     const wsSQUIDValue = await wsSquidContract.wsSQUIDValue(ethers.utils.parseUnits("1", "gwei"));
@@ -55,6 +62,7 @@ export const loadDetails = createAsyncThunk(
       },
       reward: {
         claimable: ethers.utils.formatEther(claimable),
+        wethClaimable: ethers.utils.formatEther(wethClaimable),
       },
       value: {
         wsSquid: ethers.utils.formatEther(wsSQUIDValue),
@@ -249,15 +257,19 @@ export const claim = createAsyncThunk(
       return;
     }
 
+    const wsFeeDistributor = addresses[networkID].FEE_DISTRIBUTOR_ADDRESS;
+    const wethFeeDistributor = addresses[networkID].FEE_DISTRIBUTOR_ADDRESS;
+
     const signer = provider.getSigner();
-    const feeDistributorContract = new ethers.Contract(
-      addresses[networkID].FEE_DISTRIBUTOR_ADDRESS,
-      feeDistributor,
+    const claimHelperContract = new ethers.Contract(
+      addresses[networkID].FEE_DISTRIBUTOR_CLAIM_HELPER,
+      feeClaimHelper,
       signer,
     );
+
     let claimTx;
     try {
-      claimTx = await feeDistributorContract["claim(address)"](address);
+      claimTx = await claimHelperContract.claim([wsFeeDistributor, wethFeeDistributor], address);
       const text = "Claim";
       const pendingTxnType = "claim";
       dispatch(fetchPendingTxns({ txnHash: claimTx.hash, text, type: pendingTxnType }));
@@ -286,6 +298,7 @@ interface IVotingEscrowSlice {
   };
   reward: {
     claimable: string;
+    wethClaimable: string;
   };
   value: {
     wsSquid: string;
@@ -297,7 +310,7 @@ const initialState: IVotingEscrowSlice = {
   loading: true,
   stake: { balance: "0", lockedBalance: "0", unlockTime: "0", totalSupply: "0", supply: "0" },
   value: { wsSquid: "0" },
-  reward: { claimable: "0" },
+  reward: { claimable: "0", wethClaimable: "0" },
 };
 
 const votingEscrowSlice = createSlice({
