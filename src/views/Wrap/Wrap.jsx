@@ -46,7 +46,6 @@ function Wrap() {
     setWrapState(newWrapState);
     setApproved(false);
     setQuantity(0);
-    console.log(approved);
   };
 
   // make this actually work instead of return magic number
@@ -58,7 +57,7 @@ function Wrap() {
     }
   };
 
-  // neet to make this function actually do something
+  // need to make this function actually do something
   const connect = event => {
     setWalletConnected(true);
   };
