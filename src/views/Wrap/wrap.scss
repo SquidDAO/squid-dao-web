@@ -17,19 +17,61 @@
 }
 
 .top-row {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: auto;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: auto;
 }
 
 .top-row-item {
-    display: flex;
-    flex-direction:column;
-    align-items: center;
-    width: fit-content;
-    margin: none;
-    padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  margin: none;
+  padding: 1em;
+}
+
+.center-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: auto;
+  padding: 1em;
+}
+
+.token-price-box{
+  width: 45%;
+  margin: 0px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.squid-input {
+  max-width: 542px;
+  width: 100%;
+  margin: 5px !important;
+}
+
+.wrap-action-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin: auto;
+  padding: 1em;
+}
+
+
+.wrap-button {
+  align-self: center;
+  min-width: 163px !important;
+  max-width: 542px !important;
+  height: 43px !important;
 }
