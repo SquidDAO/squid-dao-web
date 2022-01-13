@@ -224,7 +224,7 @@ function Lock() {
           <div className="lock-card reward d-flex flex-column justify-content-center">
             <div className="title">Claimable Rewards</div>
             <div className="value">{commify(reward, 6)} wsSQUID</div>
-            <div className="value">{commify(reward, 6)} wETH</div>
+            <div className="value">{commify(wethReward, 6)} wETH</div>
             {hasReward && (
               <div>
                 <Button
