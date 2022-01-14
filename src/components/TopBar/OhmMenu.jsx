@@ -143,7 +143,7 @@ function OhmMenu() {
                       <Button
                         variant="contained"
                         color="secondary"
-                        style={{ maxHeight: "unset" }}
+                        style={{ maxHeight: "unset", backgroundColor: "transparent" }}
                         onClick={addTokenToWallet("SQUID", SQUID_ADDRESS)}
                       >
                         <img src={SquidImg} style={{ height: "35px", width: "35px" }} />
@@ -152,7 +152,7 @@ function OhmMenu() {
                       <Button
                         variant="contained"
                         color="secondary"
-                        style={{ maxHeight: "unset" }}
+                        style={{ maxHeight: "unset", backgroundColor: "transparent" }}
                         onClick={addTokenToWallet("sSQUID", SSQUID_ADDRESS)}
                       >
                         <img src={SSquidImg} style={{ height: "35px", width: "35px" }} />
@@ -161,7 +161,7 @@ function OhmMenu() {
                       <Button
                         variant="contained"
                         color="secondary"
-                        style={{ maxHeight: "unset"}}
+                        style={{ maxHeight: "unset", backgroundColor: "transparent" }}
                         onClick={addTokenToWallet("WsSQUID", WSSQUID_ADDRESS)}
                       >
                         <img src={WSSquidImg} style={{ height: "35px", width: "35px" }} />
