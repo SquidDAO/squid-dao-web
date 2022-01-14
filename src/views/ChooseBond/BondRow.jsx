@@ -34,7 +34,7 @@ export function BondDataCard({ bond }) {
         <div className="data-row">
           <Typography>Price</Typography>
           <Typography className="bond-price">
-            <>{isBondLoading ? <Skeleton width="50px" /> : formatEth(bond.bondPrice, 2)}</>
+            <>{isBondLoading ? <Skeleton width="50px" /> : bond.soldOut ? "Sold Out" : formatEth(bond.bondPrice, 2)}</>
           </Typography>
         </div>
 
@@ -91,7 +91,7 @@ export function BondTableData({ bond }) {
       </TableCell>
       <TableCell align="left">
         <Typography>
-          <>{isBondLoading ? <Skeleton width="50px" /> : formatEth(bond.bondPrice, 2)}</>
+          <>{isBondLoading ? <Skeleton width="50px" /> : isSoldOut ? "N/A" : formatEth(bond.bondPrice, 2)}</>
         </Typography>
       </TableCell>
       <TableCell align="left">
