@@ -17,11 +17,14 @@ import { Skeleton } from "@material-ui/lab";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGavel } from "@fortawesome/free-solid-svg-icons";
 import "./sidebar.scss";
+import { useENS } from "src/hooks/useENS";
+import Davatar from "@davatar/react";
 
 function NavContent() {
   const [isActive] = useState();
   const address = useAddress();
   const { bonds } = useBonds();
+  const { ensName } = useENS(address);
   const checkPage = useCallback((match, location, page) => {
     const currentPath = location.pathname.replace("/", "");
     if (currentPath.indexOf("dashboard") >= 0 && page === "dashboard") {
@@ -61,8 +64,11 @@ function NavContent() {
 
             {address && (
               <div className="wallet-link">
+                <span className="davatar">
+                  <Davatar size={20} address={address} />
+                </span>
                 <Link href={`https://etherscan.io/address/${address}`} target="_blank">
-                  {shorten(address)}
+                  {ensName || shorten(address)}
                 </Link>
               </div>
             )}
