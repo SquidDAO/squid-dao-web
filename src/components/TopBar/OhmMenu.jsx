@@ -162,10 +162,10 @@ function OhmMenu() {
                         variant="contained"
                         color="secondary"
                         style={{ maxHeight: "unset", backgroundColor: "transparent" }}
-                        onClick={addTokenToWallet("WsSQUID", WSSQUID_ADDRESS)}
+                        onClick={addTokenToWallet("wsSQUID", WSSQUID_ADDRESS)}
                       >
                         <img src={WSSquidImg} style={{ height: "35px", width: "35px" }} />
-                        <Typography variant="body1">WsSQUID</Typography>
+                        <Typography variant="body1">wsSQUID</Typography>
                       </Button>
                       {/*<Button variant="contained" color="secondary" onClick={addTokenToWallet("33T", PT_TOKEN_ADDRESS)}>*/}
                       {/*  <SvgIcon*/}
