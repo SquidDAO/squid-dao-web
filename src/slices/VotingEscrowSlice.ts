@@ -258,7 +258,7 @@ export const claim = createAsyncThunk(
     }
 
     const wsFeeDistributor = addresses[networkID].FEE_DISTRIBUTOR_ADDRESS;
-    const wethFeeDistributor = addresses[networkID].FEE_DISTRIBUTOR_ADDRESS;
+    const wethFeeDistributor = addresses[networkID].WETH_FEE_DISTRIBUTOR_ADDRESS;
 
     const signer = provider.getSigner();
     const claimHelperContract = new ethers.Contract(
